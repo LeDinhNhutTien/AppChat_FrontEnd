@@ -57,7 +57,12 @@ const handLougout = () => {
                         // lưu trữ thông tin đăng nhập
                         setToken(responseData.data.tokens);
                     }else {
-                        // Đăng nhập thất bại, xử lý lỗi tại đây
+                     setErrorMsg("Đăng nhập thất bại");
+                    }
+                    if(responseData.data ==="You are Logout!"  && responseData.event ==="LOGOUT" && responseData.status=== "success"){
+                       setIsLoginSuccess(false);
+                        const newSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
+                        setSocket(newSocket);
                     }
 
             }
