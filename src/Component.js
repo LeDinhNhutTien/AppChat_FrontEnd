@@ -64,6 +64,18 @@
                     }
                 }
 
+                // lay ra danh sach nguoi dung, phong
+                const handGetUserList = () =>{
+                    if (socket){
+                        const getUser = {
+                            action: "onchat",
+                            data: {
+                                event: "GET_USER_LIST"
+                            }
+                        }
+                    }
+                }
+
                 // sau khi kết nối websocket thành công
                 useEffect(() => {
                     if (socket){
@@ -81,6 +93,11 @@
                              // check user
                             if (responseData.event === "CHECK_USER" && responseData.status === "success"){
                                 console.log(responseData.data.status);
+                            }
+
+                            // lay ra danh sach nguoi dung, phong
+                            if (responseData.event === "GET_USER_LIST" && responseData.status === "success"){
+                                console.log(responseData.data);
                             }
                         }
                     }
