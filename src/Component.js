@@ -11,6 +11,7 @@
                 const [token, setToken] = useState("");
                 const [errorMsg, setErrorMsg] = useState("");
                 const [customer, setCutomer] = useState("");
+                const [messenger, setMess] = useState("");
 
                 // khi component được taạo thiết lập kết nối websocket
                 useEffect(() =>{
@@ -47,6 +48,43 @@
               }
               socket.send(JSON.stringify(eventLougout));
             }
+            // get room mess chat
+                const get_room_mess_chat = (roomName) => {
+                    if(socket) {
+                        const getroom = {
+                            action: "onchat",
+                            data: {
+                                event: "GET_ROOM_CHAT_MES",
+                                data: {
+                                    name: roomName,
+                                    page: 1
+                                }
+                            }
+                        }
+                        socket.send(JSON.stringify(getroom));
+                    }
+                }
+
+                // send chat room
+                const messchat = (roomName) => {
+                    return new Promise(resolve => {
+                        if(socket){
+                            const mess1 = {
+                                action: "SEND_CHAT",
+                                data:{
+                                    type: "room",
+                                    to: roomName,
+                                    mes: encodeURIComponent(messenger)
+                                }
+
+                            }
+                        }
+                    })
+                }
+
+                const twoMessChat = (roomName) =>{
+                    messchat(roomName).then(get_room_mess_chat(roomName));
+                }
 
             // check user
                 const checkUser = () =>{
