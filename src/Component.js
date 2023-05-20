@@ -2,7 +2,12 @@
             import React, {useState, useEffect} from "react";
             import {w3cwebsocket} from "websocket";
 
+            import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+            import './room.css'
+
+
             import LoginForm from "./LoginForm";
+            import Room from "./Room";
             const Component = () =>{
                 const [socket, setSocket] = useState(null);
                 const [user, setUser] = useState("");
@@ -244,13 +249,94 @@
                     <div>
                             <div>
                                 {isLoginSuccess == true&&
-                               <div>
-                                   <h1>Thành công</h1>
-                                   <h1 onClick={()=> handLougout()}>Dang xuat</h1>
+                                    <div className="container1">
+                                        {/*Header chat*/}
 
-                               </div>
+                                       <div className="left-sidebar">
+                                           <div className="header-chat">
+                                               <div className="user-avatar">
+                                                   <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className="img-cover"/>
+                                               </div>
+                                               <ul className="icon-nav">
+                                                   <li>
+                                                       <i className="fa-solid fa-border-all"></i>
+                                                   </li>
+                                                   <li>
+                                                       <i className="fa-solid fa-video"></i>
+                                                   </li>
+                                                   <li>
+                                                       <i className="fa-solid fa-ellipsis-vertical"></i>
+                                                   </li>
+                                               </ul>
+                                           </div>
 
+                                            {/*search chat*/}
+                                           <div className="search-chat">
+                                               <i className="fa-solid fa-magnifying-glass"></i>
+                                               <div><input type="text" placeholder="Search or start new chat" fdprocessedid="hss68p"/>
+                                               </div>
+                                           </div>
 
+                                           {/*Chat list*/}
+                                           <div className="box-chat active">
+                                               <div className="img-userchat">
+                                                   <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className="img-cover"/>
+                                               </div>
+                                               <div className="details">
+                                                   <div className="headerlist">
+                                                       <p>Huỳnh Anh Tài</p>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           <div className="chat-input-left">
+                                               <input type="text" placeholder="Type a massage"/>
+                                               <i className="fa-solid fa-square-plus"></i>
+                                           </div>
+
+                                       </div>
+
+                                        <div className="right-sidebar">
+                                            {/*Header chat*/}
+                                            <div class="header-chat">
+                                                <div class="imgtext">
+                                                    <div class="user-avatar">
+                                                        <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className="img-cover"/>
+                                                    </div>
+                                                    <i className="fa-solid fa-user-plus"></i>
+                                                    <p>Huỳnh Anh Tài<br /><span>online</span></p>
+                                                </div>
+                                                <ul className="icon-nav">
+                                                    <li>
+                                                        <i className="fa-solid fa-magnifying-glass"></i>
+                                                    </li>
+                                                    <li>
+                                                        <i className="fa-solid fa-ellipsis-vertical"></i>
+                                                    </li>
+                                                    <li>
+                                                        <span className="logout">Đăng xuất</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div className="search-chat none">
+                                                <input type="text" placeholder="Check user" fdprocessedid="hss68p" value=""/>
+                                                <div className="icon-checkUser">
+                                                    <i className="fa-solid fa-chevron-right"></i>
+                                                </div>
+                                            </div>
+                                            {/*Chat box*/}
+                                            <div className="chatbox">
+
+                                            </div>
+
+                                            <div class="chat-input-right">
+                                                <i className="fa-regular fa-face-smile"></i>
+                                                <i className="fa-solid fa-paperclip"></i>
+                                                <input type="text" placeholder="Type a massage"/>
+                                                <i className="fa-solid fa-microphone"></i>
+                                            </div>
+                                        </div>
+
+                                    </div>
 
                                 }
                                 {isLoginSuccess == false &&
