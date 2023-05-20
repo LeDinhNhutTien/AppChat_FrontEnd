@@ -42,6 +42,7 @@
                     };
                     socket.send(JSON.stringify(requestData));
                 }
+                // su kien dang xuat
             const handLougout = () => {
               const eventLougout ={
                   action: "onchat",
@@ -51,10 +52,36 @@
               }
               socket.send(JSON.stringify(eventLougout));
             }
-            //xử lý join room
-                const handJoinRoom = (roomName) => {
-
+            // tao phong
+                const handCreateRoom = () => {
+                  if(socket){
+                      const data ={
+                          action: "onchat",
+                          data: {
+                              event: "CREATE_ROOM",
+                              data: {
+                                  name: roomName,
+                              },
+                          }
+                      }
+                      socket.send(socket.stringify(data));
+                  }
                 }
+            //xử lý join room
+             const    handJoinRoom = (roomName) => {
+                 if (socket) {
+                     const joinroom = {
+                         action: "onchat",
+                         data: {
+                             event: "JOIN_ROOM",
+                             data: {
+                                 name: roomName
+                             }
+                         },
+                     }
+                     socket.send(socket.stringify(joinroom));
+                 }
+             }
 
             // get room mess chat
                 const get_room_mess_chat = (roomName) => {
@@ -168,9 +195,17 @@
                                     setIsLoginSuccess(true);
                                     // lưu trữ thông tin đăng nhập
                                     setToken(responseData.data.tokens);
+                                    // luu tru RE_LOGIN_CODE
+                                    // tai sao dung session
+                                    sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
+                                    sessionStorage.setItem("success", responseData.status);
+                                    sessionStorage.setItem("name", user);
                                 }else {
-                                    // Đăng nhập thất bại, xử lý lỗi tại đây
+                                  setErrorMsg("Đăng nhập không thành công");
                                 }
+                      if(responseData.data === "LOGOUT" && responseData.status === "success" ){
+
+                        }
 
                                 // get room chat mess
                             if(responseData.event === "GET_ROOM_CHAT_MES" && responseData.status === "success"){
@@ -208,8 +243,14 @@
                 return(
                     <div>
                             <div>
-                                {(isLoginSuccess == true)&&
-                                    <h1>Thành công</h1>
+                                {isLoginSuccess == true&&
+                               <div>
+                                   <h1>Thành công</h1>
+                                   <h1 onClick={()=> handLougout()}>Dang xuat</h1>
+
+                               </div>
+
+
 
                                 }
                                 {isLoginSuccess == false &&
