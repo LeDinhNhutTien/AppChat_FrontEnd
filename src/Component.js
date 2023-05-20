@@ -8,6 +8,7 @@
 
             import LoginForm from "./LoginForm";
             import Room from "./Room";
+            import {navigate} from "ionicons/icons";
             const Component = () =>{
                 const [socket, setSocket] = useState(null);
                 const [user, setUser] = useState("");
@@ -20,6 +21,7 @@
                 const [roomName, setRoomName] = useState("");
                 const [messege, setMessege] = useState([]);
                 const [isMessenger, setisMess] = useState(false);
+                const navigate = useNavigate();
 
                 // khi component được taạo thiết lập kết nối websocket
                 useEffect(() =>{
@@ -205,6 +207,7 @@
                                     sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
                                     sessionStorage.setItem("success", responseData.status);
                                     sessionStorage.setItem("name", user);
+                                    navigate("/home");
                                 }else {
                                   setErrorMsg("Đăng nhập không thành công");
                                 }
@@ -337,7 +340,6 @@
                                         </div>
 
                                     </div>
-
                                 }
                                 {isLoginSuccess == false &&
                                         <LoginForm
@@ -348,8 +350,6 @@
                                             handleLogin = {handleLogin}
                                             errorMsg={errorMsg}
                                         />
-
-
                                 }
                             </div>
                     </div>
