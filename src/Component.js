@@ -320,14 +320,16 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div className="search-chat none">
-                                                <input type="text" placeholder="Check user" fdprocessedid="hss68p" value=""/>
-                                                <div className="icon-checkUser">
-                                                    <i className="fa-solid fa-chevron-right"></i>
+                                            <div className="search-chat">
+                                                <i className="fa-solid fa-chevron-right"></i>
+                                                <div><input type="text" placeholder="Check User" fdprocessedid="hss68p"/>
                                                 </div>
                                             </div>
                                             {/*Chat box*/}
                                             <div className="chatbox">
+                                                <div className="mess mymess">
+                                                    <p>Chào bạn <br/><span>21:15</span></p>
+                                                </div>
 
                                             </div>
 
@@ -335,7 +337,7 @@
                                                 <i className="fa-regular fa-face-smile"></i>
                                                 <i className="fa-solid fa-paperclip"></i>
                                                 <input type="text" placeholder="Type a massage"/>
-                                                <i className="fa-solid fa-microphone"></i>
+                                                <i className="fa-solid fa-paper-plane"></i>
                                             </div>
                                         </div>
 
