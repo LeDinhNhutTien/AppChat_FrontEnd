@@ -24,6 +24,7 @@
                 const navigate = useNavigate();
 
                 // khi component được taạo thiết lập kết nối websocket
+                const mesnam=  sessionStorage.getItem("mesnam");
                 useEffect(() =>{
                     const newSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
 
@@ -31,6 +32,29 @@
                         console.log("Kết nối websocket đã được thiết lập", event);
                         setSocket(newSocket);
                     })
+                   const susscess =sessionStorage.getItem("success");
+                    if(susscess=== "success"){
+                        sessionStorage.setItem("name1", mesnam);
+                        const nlu = sessionStorage.getItem("codeNlu");
+                        newSocket.onopen = function () {
+                            const relogin = {
+                                action: "onchat",
+                                data: {
+                                    event: "RE_LOGIN",
+                                    data: {
+                                        user: mesnam,
+                                        code: nlu
+                                    }
+                                }
+                            }
+                            newSocket.send(JSON.stringify(relogin));
+                        }
+                    }
+                    return () => {
+                        console.log("Closing WebSocket connection...");
+                        newSocket.close();
+
+                    };
                 },[]);
 
 
@@ -206,13 +230,18 @@
                                     // tai sao dung session
                                     sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
                                     sessionStorage.setItem("success", responseData.status);
-                                    sessionStorage.setItem("name", user);
+
                                     navigate("/home");
+                                    handGetUserList();
                                 }else {
                                   setErrorMsg("Đăng nhập không thành công");
                                 }
-                      if(responseData.data === "LOGOUT" && responseData.status === "success" ){
-
+                      if(responseData.event === "LOGOUT" && responseData.status === "success" &&responseData.data === "You are Logout!" ){
+                          setIsLoginSuccess(false);
+                          const newSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
+                          setSocket(newSocket);
+                          setErrorMsg("")
+                          navigate("/login");
                         }
 
                                 // get room chat mess
@@ -221,7 +250,17 @@
                                 const name = sessionStorage.getItem("name");
                                 handJoinRoom(room);
                             }
-
+                            // ma relogin chi ddung 1 lan
+                            // relogin
+                            if(responseData.event ==="RE_LOGIN"  && responseData.status === "success"){
+                                setIsLoginSuccess(true);
+                            }
+                            // relogin het thoi gian
+                            if(responseData.event === "RE_LOGIN" && responseData.status ===
+                                "error" && responseData.mes === "Re-Login error, Code error or you are overtime to relogin!"){
+                                setIsLoginSuccess(false);
+                                setErrorMsg("");
+                            }
                             // gửi tin nhắn thành công
                             if (responseData.event === "SEND_CHAT" && responseData.status === "success"){
                                 setisMess(true);
@@ -252,96 +291,8 @@
                     <div>
                             <div>
                                 {isLoginSuccess == true&&
-                                    <div className="container1">
-                                        {/*Header chat*/}
-
-                                       <div className="left-sidebar">
-                                           <div className="header-chat">
-                                               <div className="user-avatar">
-                                                   <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className="img-cover"/>
-                                               </div>
-                                               <ul className="icon-nav">
-                                                   <li>
-                                                       <i className="fa-solid fa-border-all"></i>
-                                                   </li>
-                                                   <li>
-                                                       <i className="fa-solid fa-video"></i>
-                                                   </li>
-                                                   <li>
-                                                       <i className="fa-solid fa-ellipsis-vertical"></i>
-                                                   </li>
-                                               </ul>
-                                           </div>
-
-                                            {/*search chat*/}
-                                           <div className="search-chat">
-                                               <i className="fa-solid fa-magnifying-glass"></i>
-                                               <div><input type="text" placeholder="Search or start new chat" fdprocessedid="hss68p"/>
-                                               </div>
-                                           </div>
-
-                                           {/*Chat list*/}
-                                           <div className="box-chat active">
-                                               <div className="img-userchat">
-                                                   <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className="img-cover"/>
-                                               </div>
-                                               <div className="details">
-                                                   <div className="headerlist">
-                                                       <p>Huỳnh Anh Tài</p>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                           <div className="chat-input-left">
-                                               <input type="text" placeholder="Type a massage"/>
-                                               <i className="fa-solid fa-square-plus"></i>
-                                           </div>
-
-                                       </div>
-
-                                        <div className="right-sidebar">
-                                            {/*Header chat*/}
-                                            <div class="header-chat">
-                                                <div class="imgtext">
-                                                    <div class="user-avatar">
-                                                        <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className="img-cover"/>
-                                                    </div>
-                                                    <i className="fa-solid fa-user-plus"></i>
-                                                    <p>Huỳnh Anh Tài<br /><span>online</span></p>
-                                                </div>
-                                                <ul className="icon-nav">
-                                                    <li>
-                                                        <i className="fa-solid fa-magnifying-glass"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                                                    </li>
-                                                    <li>
-                                                        <span className="logout">Đăng xuất</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="search-chat">
-                                                <i className="fa-solid fa-chevron-right"></i>
-                                                <div><input type="text" placeholder="Check User" fdprocessedid="hss68p"/>
-                                                </div>
-                                            </div>
-                                            {/*Chat box*/}
-                                            <div className="chatbox">
-                                                <div className="mess mymess">
-                                                    <p>Chào bạn <br/><span>21:15</span></p>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="chat-input-right">
-                                                <i className="fa-regular fa-face-smile"></i>
-                                                <i className="fa-solid fa-paperclip"></i>
-                                                <input type="text" placeholder="Type a massage"/>
-                                                <i className="fa-solid fa-paper-plane"></i>
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                  <Room   user={user}
+                                          handLougout={handLougout}/>
                                 }
                                 {isLoginSuccess == false &&
                                         <LoginForm
