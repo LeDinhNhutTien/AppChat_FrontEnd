@@ -1,4 +1,5 @@
 import React, {useState, useEffect, Component} from "react";
+import EmojiPicker from "emoji-picker-react";
 
 
 export default class Room extends React.Component{
@@ -98,14 +99,21 @@ export default class Room extends React.Component{
                     </div>
 
                     <div className="chat-input-right">
-                        <i className="fa-regular fa-face-smile"></i>
+                   <div id="pos" onClick={this.props.handPosClick}>   <i className="fa-regular fa-face-smile"></i></div>
                         <i className="fa-solid fa-paperclip"></i>
                         <input type="text" placeholder="Type a massage"/>
                         <i className="fa-solid fa-paper-plane"></i>
                     </div>
                 </div>
-
+                <div className="icon_Emoid">
+                    {this.props.isEmojiPickerVisible && (
+                        <EmojiPicker
+                            onEmojiClick={this.props.handleEmojiClick}
+                        />
+                    )}
+                </div>
             </div>
+
         </div>
 
 

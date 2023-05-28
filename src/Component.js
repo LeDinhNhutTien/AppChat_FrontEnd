@@ -21,6 +21,10 @@
                 const [roomName, setRoomName] = useState("");
                 const [messege, setMessege] = useState([]);
                 const [isMessenger, setisMess] = useState(false);
+                // emoij
+                const [selectedEmoji, setSelectedEmoji] =useState(null);
+                // check khi clcik vao emoij
+                const  [isEmojiPickerVisible, setEmojiPickerVisible] =useState(false);
                 const navigate = useNavigate();
 
                 // khi component được taạo thiết lập kết nối websocket
@@ -56,8 +60,17 @@
 
                     };
                 },[]);
+// xét lại giá tra (mặc định là false);
+                const handlePosClick = () => {
+                    setEmojiPickerVisible(!isEmojiPickerVisible);
+                };
+// clcik chọn emoij
+                const handleEmojiClick = (emoji) => {
+                    setSelectedEmoji(emoji.emoji); // chọn emoij
+                    // thêm nhiều emoij + vào trong mess -> xét lại các giá trị
+                    setMess(messenger + emoji.emoji);
 
-
+                };
                 // xử lý đăng nhập
                 const handleLogin = () => {
                     // gửi yêu cầu đăng nhập đến server socket
@@ -230,7 +243,6 @@
                                     // tai sao dung session
                                     sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
                                     sessionStorage.setItem("success", responseData.status);
-
                                     navigate("/home");
                                     handGetUserList();
                                 }else {
@@ -292,7 +304,12 @@
                             <div>
                                 {isLoginSuccess == true&&
                                   <Room   user={user}
-                                          handLougout={handLougout}/>
+                                          handLougout={handLougout}
+                                  handPosClick={handlePosClick}
+                                          isEmojiPickerVisible={isEmojiPickerVisible}
+                                          handleEmojiClick={handleEmojiClick}
+
+                                  />
                                 }
                                 {isLoginSuccess == false &&
                                         <LoginForm
