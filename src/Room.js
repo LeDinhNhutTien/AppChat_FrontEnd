@@ -1,5 +1,8 @@
 import React, {useState, useEffect, Component} from "react";
 import EmojiPicker from "emoji-picker-react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
+import './room.css'
 
 
 export default class Room extends React.Component{
@@ -10,6 +13,10 @@ export default class Room extends React.Component{
         const username =  sessionStorage.getItem("name1");
         // lay ten phong
         const nameRoom = localStorage.getItem("nameRoom");
+
+        const chatData = localStorage.getItem("own");
+        const sortMess = this.props.messege.sort((a, b) => a.id - b.id);
+        const ownner = localStorage.getItem("ownner");
         return <div>
 
             <div className="container1">
@@ -79,8 +86,12 @@ export default class Room extends React.Component{
 
                     </div>
                     <div className="chat-input-left">
-                        <input type="text" placeholder="Type a massage"/>
-                        <i className="fa-solid fa-square-plus"></i>
+                        < input type="text" value={this.props.roomName}
+                                onChange={(e) => this.props.setRoomName(e.target.value)}
+                                placeholder="Nhập tên phòng"/>
+                        <div onClick={this.props.handCreateRoom}>
+                            <FontAwesomeIcon icon="fa-sharp fa-light fa-square-plus"/><FontAwesomeIcon icon={faSquarePlus}/>
+                        </div>
                     </div>
 
                 </div>
@@ -88,44 +99,150 @@ export default class Room extends React.Component{
                 <div className="right-sidebar">
                     {/*Header chat*/}
                     <div className="header-chat">
-                        <div className="imgtext">
-                            <div className="user-avatar">
-                                <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg"
-                                     className="img-cover"/>
+                        <div className={"imgtext"}>
+                            <div className={"user-avatar"}>
+                                <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className={"img-cover"}/>
                             </div>
-                            <i className="fa-solid fa-user-plus"></i>
-                            <p>{nameRoom}<br/><span>online</span></p>
+
+                            <div>
+                                <ion-icon name={"person-add-outline"} role={"img"} className ="md hydrated" aria-label={"person-add-outline"}></ion-icon>
+                            </div>
+
+                            <p className={"author_mess"}>{nameRoom}<br/>
+                            <span>Online</span></p>
                         </div>
-                        <ul className="icon-nav">
+
+                        <div className={"icon-nav"}>
                             <li>
-                                <i className="fa-solid fa-magnifying-glass"></i>
+                                <ion-icon name={"search-outline"} role={"img"} className={"md hydrated"} aria-label={"ellipsis vertical"}></ion-icon>
                             </li>
-                            <li>
-                                <i className="fa-solid fa-ellipsis-vertical"></i>
-                            </li>
-                            <li>
-                                <span onClick={ this.props.handLougout} className="logout">Đăng xuất</span>
-                            </li>
-                        </ul>
+                        </div>
+
+                        {/*logout*/}
+                        <button className={"logout"} onClick={this.props.handLougout}>Đăng xuất</button>
                     </div>
+
+                    {/*Check User*/}
                     <div className="search-chat">
                         <i className="fa-solid fa-chevron-right"></i>
                         <div><input type="text" placeholder="Check User" fdprocessedid="hss68p"/>
                         </div>
                     </div>
+
                     {/*Chat box*/}
                     <div className="chatbox">
-                        <div className="mess mymess">
-                            <p>Chào bạn <br/><span>21:15</span></p>
+
+                        <div>
+                            {sortMess.map((message, index) =>  (
+                                <div>
+                                    <div>
+                                        {message.name === "20130423" && !message.mes.startsWith("https") &&
+                                            <div className={"mess frmess"}>
+                                                <h6>
+                                                    <h6 key={index}>
+                                                        <img src="https://i.pinimg.com/564x/b1/78/32/b17832ed39fd47db601a525e963050a2.jpg" className={"messFr"}></img>
+                                                        <h6>{message.name}</h6>
+                                                        <p>{decodeURIComponent(message.mes)}<br/>
+                                                            <span>{message.createAt}</span></p>
+                                                    </h6>
+                                                </h6>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        {message.name === "20130433" && !message.mes.startsWith("https") &&
+                                            <div className={"mess frmess"}>
+                                                <h6>
+                                                    <h6 key={index}>
+                                                        <img src="https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg" className={"messFr"}></img>
+                                                        <h6>{message.name}</h6>
+                                                        <p>{decodeURIComponent(message.mes)}<br/>
+                                                            <span>{message.createAt}</span></p>
+                                                    </h6>
+                                                </h6>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        {message.name === "20130388" && !message.mes.startsWith("https") &&
+                                            <div className={"mess mymess"}>
+                                                <h6>
+                                                    <h6 key={index}>
+                                                        <img src={"https://timanhdep.com/wp-content/uploads/2022/06/hinh-nen-cute-anh-nen-cute-dang-yeu-nhat-the-gioi-01.jpg"}></img>
+                                                        <h6>{message.name}</h6>
+                                                        <p>{decodeURIComponent(message.mes)}<br/>
+                                                        <span>{message.createAt}</span></p>
+                                                    </h6>
+                                                </h6>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div>
+                                        {message.name === "20130423" && message.mes.startsWith("https") || message.name === "20130433" && message.mes.startsWith("https") &&
+                                        <div className={"mess frmess"}>
+                                            <h6>
+                                                <h6 key={index}>
+                                                    <img src={"https://i.pinimg.com/564x/b1/78/32/b17832ed39fd47db601a525e963050a2.jpg"} className={'messFr'}></img>
+                                                    <h6>{message.name}</h6>
+                                                    <p>
+                                                        <a href={decodeURIComponent(message.mes)} target={"_blank"} onClick={(event) =>{
+                                                        event.preventDefault();
+                                                        window.open(decodeURIComponent(message.mes))}
+                                                        }>{decodeURIComponent(message.mes)}</a>
+                                                        <br/> <span>{message.createAt}</span>
+                                                    </p>
+                                                </h6>
+                                            </h6>
+
+                                        </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        {message.name === "20130388" && message.mes.startsWith("https") &&
+                                        <div className={"mess mymess"}>
+                                            <h6>
+                                                <h6 key={index}>
+                                                    <img src={"https://timanhdep.com/wp-content/uploads/2022/06/hinh-nen-cute-anh-nen-cute-dang-yeu-nhat-the-gioi-01.jpg"}></img>
+                                                    <h6>{message.name}</h6>
+                                                    <p><a href={decodeURIComponent(message.mes)} target="_blank"
+                                                          onClick={(event) => {
+                                                              event.preventDefault();
+                                                              window.open(decodeURIComponent(message.mes))
+                                                          }}>{decodeURIComponent(message.mes)}</a>
+                                                        <br/><span>{message.createAt}</span></p>
+                                                </h6>
+                                            </h6>
+                                        </div>}
+                                    </div>
+
+                                </div>
+                            ))}
                         </div>
 
                     </div>
 
                     <div className="chat-input-right">
-                   <div id="pos" onClick={this.props.handPosClick}>   <i className="fa-regular fa-face-smile"></i></div>
+                   <div id="pos" onClick={this.props.handPosClick}>
+                       <i className="fa-regular fa-face-smile"></i>
+                   </div>
                         <i className="fa-solid fa-paperclip"></i>
                         <input type="text" placeholder="Type a massage"/>
                         <i className="fa-solid fa-paper-plane"></i>
+                    </div>
+
+                    <div>
+                        <main>
+                            <input type="{file}" accept={"image/*"} className={"input-field"} hidden
+                            onChange={this.props.handleImageChange}/>
+                            <ion-icon onClick={() => document.querySelector(".input-field").click()}
+                                      name="attach-outline" role="img" className="md hydrated" aria-label="attach outline">
+                            </ion-icon>
+                        </main>
+
+                        <input type="text" placeholder="Type a message" value={this.props.messenger}
+                        onChange={(e) => this.props.setMess(e.target.value)} fdprocessedid="61a96k"/>
+                        <ion-icon onClick={() => this.props.handTwoClick(nameRoom)} name="send" role="img" className="md hydrated" aria-label="send"></ion-icon>
                     </div>
                 </div>
                 <div className="icon_Emoid">
