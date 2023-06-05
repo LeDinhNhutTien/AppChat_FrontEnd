@@ -29,6 +29,14 @@
                 const  [isEmojiPickerVisible, setEmojiPickerVisible] =useState(false);
                 const navigate = useNavigate();
 
+                //uploadFile
+                const [image, setImage] = useState(null)
+                const [fileName, setFileName] = useState("")
+
+                const handTwoClick = (roomName) =>{
+                    messchat(roomName).then(messPeople())
+                }
+
                 // khi component được taạo thiết lập kết nối websocket
                 const mesnam=  sessionStorage.getItem("mesnam");
                 useEffect(() =>{
@@ -108,11 +116,13 @@
                               data: {
                                   name: roomName,
                               },
-                          }
-                      }
-                      socket.send(socket.stringify(data));
+                          },
+                      };
+                      socket.send(JSON.stringify(data));
                   }
                 }
+
+
             //xử lý join room
                 const handJoinRoom = (roomName) => {
 
@@ -151,7 +161,7 @@
 
                 // send chat room
                 const messchat = (roomName) => {
-                    return new Promise(resolve => {
+                    return new Promise((resolve) => {
                         if(socket){
                             const mess1 = {
                                 action: "SEND_CHAT",
@@ -162,6 +172,8 @@
                                 }
 
                             }
+                            socket.send(JSON.stringify(mess1));
+                            resolve();
                         }
                     })
                 }
@@ -232,6 +244,15 @@
                             }
                         }
                         socket.send(JSON.stringify(getUser));// chuyen ve chuoi  - gui den socket
+                    }
+                }
+
+                // file đang làm
+                function handleImageChange({target: {files}}){
+                    if (files && files[0]){
+                        setFileName(files[0].name);
+                        setImage(URL.createObjectURL(files[0]));
+                        setMess(fileName);
                     }
                 }
 
@@ -323,13 +344,23 @@
                     <div>
                             <div>
                                 {isLoginSuccess == true&&
-                                  <Room   user={user}
-                                          handLougout={handLougout}
-                                  handPosClick={handlePosClick}
-                                          isEmojiPickerVisible={isEmojiPickerVisible}
-                                          handleEmojiClick={handleEmojiClick}
-                        roomList ={roomList}
-                                          handJoinRoom={handJoinRoom}
+                                  <Room
+                                      user={user}
+                                      handLougout={handLougout}
+                                      handPosClick={handlePosClick}
+                                      isEmojiPickerVisible={isEmojiPickerVisible}
+                                      handleEmojiClick={handleEmojiClick}
+                                      roomList ={roomList}
+                                      setRoomList ={setRoomList}
+                                      handCreateRoom={handCreateRoom}
+                                      handJoinRoom={handJoinRoom}
+                                      roomName={roomName}
+                                      setRoomName={setRoomName}
+                                      handleImageChange={handleImageChange}
+                                      messenger={messenger}
+                                      setMess={setMess}
+                                      handTwoClick={handTwoClick}
+                                      messege={messege}
                                   />
                                 }
                                 {isLoginSuccess == false &&
