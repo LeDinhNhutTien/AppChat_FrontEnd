@@ -271,6 +271,7 @@
                                     sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
                                     sessionStorage.setItem("success", responseData.status);
                                     navigate("/home");
+                                    // lay ra danh sach nguoi dung, phong
                                     handGetUserList();
                                 }else {
                                   setErrorMsg("Đăng nhập không thành công");
@@ -304,7 +305,6 @@
                                 setIsLoginSuccess(false);
                                 setErrorMsg("");
 
-
                             }
                             // gửi tin nhắn thành công
                             if (responseData.event === "SEND_CHAT" && responseData.status === "success"){
@@ -318,7 +318,7 @@
                                 const room = localStorage.getItem("nameRoom");
                                 handJoinRoom(room);
                             }
-// joinroom
+                            // joinRoom
                             if (responseData.event === "JOIN_ROOM" && responseData.status === "success") {
                                 localStorage.setItem("nameRoom", responseData.data.name);
                                 setMessege(responseData.data.chatData);
@@ -328,7 +328,10 @@
                             }
                              // check user
                             if (responseData.event === "CHECK_USER" && responseData.status === "success"){
+                                const room = localStorage.getItem("nameRoom");
                                 console.log(responseData.data.status);
+                                handJoinRoom(room);
+                                handGetUserList();
                             }
 
                             // lay ra danh sach nguoi dung, phong
@@ -361,6 +364,9 @@
                                       setMess={setMess}
                                       handTwoClick={handTwoClick}
                                       messege={messege}
+                                      checkUser={checkUser}
+                                      handGetUserList={handGetUserList}
+
                                   />
                                 }
                                 {isLoginSuccess == false &&
