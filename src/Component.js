@@ -29,12 +29,14 @@
                 const  [isEmojiPickerVisible, setEmojiPickerVisible] =useState(false);
                 const navigate = useNavigate();
 
+
+
                 //uploadFile
                 const [image, setImage] = useState(null)
                 const [fileName, setFileName] = useState("")
 
-                const handTwoClick = (roomName) =>{
-                    messchat(roomName).then(messPeople())
+                const handTwoClick = (roomName, user) =>{
+                    messchat(roomName).then(messPeople(user))
                 }
 
                 // khi component được taạo thiết lập kết nối websocket
@@ -200,22 +202,26 @@
                 }
 
                 // send chat people
-                const messPeople = (user) =>{
-                    if (socket){
-                        const people = {
-                            action: "onchat",
-                            data: {
-                                event: "SEND_CHAT",
-                                data: {
-                                    type: "people",
-                                    to: user,
-                                    mes: encodeURIComponent(messenger)
+                const messPeople = (user) => {
+                    if (socket) {
+                        return new Promise((resolve) => {
+                                const people = {
+                                    action: "onchat",
+                                    data: {
+                                        event: "SEND_CHAT",
+                                        data: {
+                                            type: "people",
+                                            to: user,
+                                            mes: encodeURIComponent(messenger)
+                                        }
+                                    }
                                 }
+                                setMessege(prevMessages => [...prevMessages, , messenger]);
+                                socket.send(JSON.stringify(people));
+                                resolve();
                             }
-                        }
-                        setMessege(prevMessages => [...prevMessages,  , messenger]);
-                        socket.send(JSON.stringify(people));
-                    }
+                        )}
+
                 }
 
             // check user
@@ -366,6 +372,7 @@
                                       messege={messege}
                                       checkUser={checkUser}
                                       handGetUserList={handGetUserList}
+                                      twoMessChat={twoMessChat}
 
                                   />
                                 }
