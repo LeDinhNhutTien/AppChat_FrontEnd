@@ -244,6 +244,25 @@
     padding: 50px;
     overflow-y: auto;
 }
+.chatbox .mess.frnmess p{
+    position: relative;
+    right: -2px;
+    text-align: right;
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+.chatbox .mess.mynmess p{
+    position: relative;
+    right: -18px;
+    text-align: right;
+    max-width: 100%;
+    padding: 12px;
+    background: #dcf8c6;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
 .mess{
     position: relative;
     display: flex;
