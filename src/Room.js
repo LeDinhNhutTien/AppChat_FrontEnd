@@ -3,28 +3,34 @@ import EmojiPicker from "emoji-picker-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import './room.css'
-import Incomingvideo from "./VideoCall/Incomingvideo";
-import {navigate} from "ionicons/icons";
-import {useNavigate} from "react-router-dom";
+import moment from 'moment-timezone';
+
+export function convertServerTimeToClientTime(serverTime) {
+    // Chuyển đổi thời gian ICT thành đối tượng Moment
+    const ictMoment = moment(serverTime).tz('Asia/Ho_Chi_Minh');
+
+    // Chuyển đổi sang múi giờ của Việt Nam (GMT+7)
+    const vnMoment = ictMoment.clone().add(7, 'hours');
+
+    // Định dạng lại thành chuỗi để hiển thị cho người dùng
+    const formattedVNTime = vnMoment.format('DD-MM-YYYY HH:mm:ss');
+
+    // Trả về thời gian của Việt Nam dưới dạng chuỗi
+    return formattedVNTime;
+}
 
 export default class Room extends React.Component{
-
     render() {
-
-
         sessionStorage.setItem("mesnam", this.props.user);
 
         const mesnam =  sessionStorage.getItem("mesnam");
         const username =  sessionStorage.getItem("name1");
-        //
-        sessionStorage.setItem("use" , username);
         // lay ten phong
         const nameRoom = localStorage.getItem("nameRoom");
 
         const chatData = localStorage.getItem("own");
         const sortMess = this.props.messege.sort((a, b) => a.id - b.id);
         const ownner = localStorage.getItem("ownner");
-        const  url =sessionStorage.getItem("linkcall");
         return <div>
 
             <div className="container1">
@@ -123,7 +129,7 @@ export default class Room extends React.Component{
                         </div>
 
                         <ul className="icon-nav">
-                            <li onClick={() => this.props.videoCall(nameRoom, url )}>
+                            <li onClick={this.props.handleVideoCall}>
                                 <i className="fa-solid fa-video"></i>
                             </li>
                             <li className="lougout" onClick={this.props.handLougout}>Đăng xuất</li>
@@ -150,21 +156,21 @@ export default class Room extends React.Component{
                                                             <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
                                                             <h6>{message.name}</h6>
                                                             <p>{decodeURIComponent(message.mes)}
-                                                                <br/><span>{message.createAt}</span></p>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
                                                 </div>
                                             }
                                         </div>
                                         <div>
-                                            {message.name === "20130423" &&  !message.mes.startsWith("https") &&  !message.mes.startsWith("http") &&
+                                            {message.name === "20130423" && !message.mes.startsWith("https") &&
                                                 <div className="mess frnmess">
                                                     <h6>
                                                         <h6 key={index}>
                                                             <img src={"https://i.pinimg.com/564x/b1/78/32/b17832ed39fd47db601a525e963050a2.jpg"} className={'messFr'}></img>
                                                             <h6>{message.name}</h6>
                                                             <p>{decodeURIComponent(message.mes)}
-                                                                <br/><span>{message.createAt}</span></p>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
 
@@ -180,7 +186,7 @@ export default class Room extends React.Component{
                                                             <img src={"https://timanhdep.com/wp-content/uploads/2022/06/hinh-nen-cute-anh-nen-cute-dang-yeu-nhat-the-gioi-01.jpg"}></img>
                                                             <h6>{message.name}</h6>
                                                             <p>{decodeURIComponent(message.mes)}
-                                                                <br/><span>{message.createAt}</span></p>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
                                                 </div>
@@ -188,7 +194,7 @@ export default class Room extends React.Component{
                                         </div>
 
                                         <div>
-                                            {message.name === "20130423" && !message.mes.endsWith("VideoCall") || message.name === "20130423"  && message.mes.startsWith("https") || message.name === "20130433" && message.mes.startsWith("https") &&
+                                            {message.name === "20130423" && message.mes.startsWith("https") || message.name === "20130433" && message.mes.startsWith("https") &&
                                                 <div className="mess frnmess">
                                                     <h6>
                                                         <h6 key={index}>
@@ -199,7 +205,7 @@ export default class Room extends React.Component{
                                                                       event.preventDefault();
                                                                       window.open(decodeURIComponent(message.mes))
                                                                   }}>{decodeURIComponent(message.mes)}</a>
-                                                                <br/><span>{message.createAt}</span></p>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
 
@@ -207,21 +213,6 @@ export default class Room extends React.Component{
                                             }
                                         </div>
                                         {/*    */}
-                                        <div>
-                                            {  message.mes.endsWith("VideoCall") &&
-                                                <div className="mess frnmess">
-                                                    <h6>
-                                                        <h6 key={index}>
-                                                            <img src={"https://i.pinimg.com/564x/b1/78/32/b17832ed39fd47db601a525e963050a2.jpg"} className={'messFr'}></img>
-                                                            <h6>{message.name}</h6>
-                                                            <p className="red-text">video gọi thoại :<a href='http://localhost:3000/room/VideoCall' >{decodeURIComponent(message.mes)}</a>
-                                                                <br/><span>{message.createAt}</span></p>
-                                                        </h6>
-                                                    </h6>
-                                                </div>
-                                            }
-                                        </div>
-
                                         <div>
                                             {message.name === "20130388" && message.mes.startsWith("https") &&
                                                 <div className="mess mymess">
@@ -233,20 +224,21 @@ export default class Room extends React.Component{
                                                                       event.preventDefault();
                                                                       window.open(decodeURIComponent(message.mes))
                                                                   }}>{decodeURIComponent(message.mes)}</a>
-                                                                <br/><span>{message.createAt}</span></p>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
                                                 </div>
                                             }
                                         </div>
-                                        {/*goi thoai*/}
-
                                     </div>
 
                                 )
                             )
                             }
+                            {/*<div>*/}
+                            {/*    <button onClick={()=> this.props.chatMessPeopleTwo( username, nameRoom)}>Ha</button>*/}
 
+                            {/*</div>*/}
                         </div>
 
                     </div>
@@ -269,6 +261,9 @@ export default class Room extends React.Component{
                         <ion-icon onClick={() => this.props.twoMessChat(nameRoom)} name="send" role="img"
                                   className="md hydrated" aria-label="send"></ion-icon>
                             </div>
+
+
+
                         </div>
                         <div className="icon_Emoid">
                             {this.props.isEmojiPickerVisible && (
