@@ -237,17 +237,17 @@ export default class Room extends React.Component{
                                            onChange={this.props.handleImageChange}/>
                                     <i className="fa-solid fa-paperclip"  onClick={() => document.querySelector(".input-field").click()}></i>
                                 </div>
-                                <input className="pointer" type="text" placeholder="Type a massage"/>
+                        <input type="text" placeholder="Type a message" value={this.props.messenger}
+                               onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                                this.props.twoMessChat(nameRoom);
+                            }
+                        }} fdprocessedid="61a96k"/>
                         <ion-icon onClick={() => this.props.twoMessChat(nameRoom)} name="send" role="img"
                                   className="md hydrated" aria-label="send"></ion-icon>
                             </div>
 
-                            <input type="text" placeholder="Type a message" value={this.props.messenger}
-                                   onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
-                                if (e.key === 'Enter') {
-                                    this.props.twoMessChat(nameRoom);
-                                }
-                            }} fdprocessedid="61a96k"/>
+
 
                         </div>
                         <div className="icon_Emoid">

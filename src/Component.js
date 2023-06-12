@@ -164,20 +164,23 @@
                 // send chat room
                 const messchat = (roomName) => {
                     return new Promise((resolve) => {
-                        if(socket){
+                        if (socket) {
                             const mess1 = {
-                                action: "SEND_CHAT",
-                                data:{
-                                    type: "room",
-                                    to: roomName,
-                                    mes: encodeURIComponent(messenger)
+                                action: "onchat",
+                                data: {
+                                    event: "SEND_CHAT",
+                                    data: {
+                                        type: "room",
+                                        to: roomName,
+                                        mes: encodeURIComponent(messenger)
+                                    }
                                 }
-
                             }
+
                             socket.send(JSON.stringify(mess1));
                             resolve();
                         }
-                    })
+                    });
                 }
 
                 const twoMessChat = (roomName) =>{
@@ -281,6 +284,7 @@
                                     setIsLoginSuccess(true);
                                     // lưu trữ thông tin đăng nhập
                                     setToken(responseData.data.tokens);
+                                    sessionStorage.setItem("mesnam", user);
                                     // luu tru RE_LOGIN_CODE
                                     // tai sao dung session
                                     sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
@@ -305,6 +309,7 @@
                             if(responseData.event === "GET_ROOM_CHAT_MES" && responseData.status === "success"){
                                 const  room = localStorage.getItem("nameRoom");
                                 const name = sessionStorage.getItem("name");
+                                setMess("");
                                 handJoinRoom(room);
                             }
                             // ma relogin chi ddung 1 lan
@@ -325,11 +330,11 @@
                             }
                             // gửi tin nhắn thành công
                             if (responseData.event === "SEND_CHAT" && responseData.status === "success"){
-                                setisMess(true);
+
                                 localStorage.setItem("mes", responseData.data.mes);
                                 localStorage.setItem("messname", responseData.data.name);
                                 console.log(responseData.chatData);
-                                setMess("");
+
                                 // để hiển thị danh sách thì ta phải lập lại việc join room trước đó
                                 // lấy giá tr của room đã lưu tr dựa vào handJoinRoom(room)
                                 const room = localStorage.getItem("nameRoom");
