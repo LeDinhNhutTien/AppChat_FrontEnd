@@ -114,9 +114,8 @@ export default class Room extends React.Component{
                         </div>
 
                         <ul className="icon-nav">
-                            <li>
+                            <li onClick={this.props.handleVideoCall}>
                                 <i className="fa-solid fa-video"></i>
-
                             </li>
                             <li className="lougout" onClick={this.props.handLougout}>Đăng xuất</li>
                         </ul>

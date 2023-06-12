@@ -1,5 +1,5 @@
             import {useNavigate} from "react-router-dom";
-            import React, {useState, useEffect} from "react";
+            import React, {useState, useEffect, useCallback} from "react";
             import {w3cwebsocket} from "websocket";
 
             import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -265,6 +265,11 @@
                         setMess(fileName);
                     }
                 }
+                const [nameVideoRoom, setNameVideoRoom] = useState("VideoCall")
+                // video call
+                const handleVideoCall = useCallback(() => {
+                        navigate(`/room/${nameVideoRoom}`);
+                }, [navigate,nameVideoRoom])
 
                 // sau khi kết nối websocket thành công
                 useEffect(() => {
@@ -381,6 +386,7 @@
                                       handGetUserList={handGetUserList}
                                       twoMessChat={twoMessChat}
                                       file={file}
+                                      handleVideoCall={handleVideoCall}
 
                                   />
                                 }
