@@ -425,7 +425,7 @@
                                       handGetUserList={handGetUserList}
                                       twoMessChat={twoMessChat}
                                       file={file}
-
+                                      Tranlate={Tranlate}
                                       handleVideoCall={handleVideoCall}
                                       videoCall={videoCall}
                                       isClickvideo={isClickvideo}
