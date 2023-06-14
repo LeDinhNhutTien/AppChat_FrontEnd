@@ -9,6 +9,9 @@
             import LoginForm from "./LoginForm";
             import Room from "./Room";
             import {navigate} from "ionicons/icons";
+            import VideoCall from "./VideoCall";
+            import RoomVideoCall from "./VideoCall";
+            import videoCall from "./VideoCall";
             const Component = () =>{
                 const [socket, setSocket] = useState(null);
                 const [user, setUser] = useState("");
@@ -20,7 +23,7 @@
                 const [messenger, setMess] = useState("");
                 const [roomName, setRoomName] = useState("");
                 const [messege, setMessege] = useState([]);
-                const [isMessenger, setisMess] = useState(false);
+                const [isClickvideo, setisClickvideo] = useState(false);
                 // tao mang chua phong
                 const [roomList, setRoomList] =useState([]);
                 // emoij
@@ -182,6 +185,27 @@
                         }
                     });
                 }
+                // mess
+                const videocall = (roomName, messenger) => {
+                    return new Promise((resolve) => {
+                        if (socket) {
+                            const mess1 = {
+                                action: "onchat",
+                                data: {
+                                    event: "SEND_CHAT",
+                                    data: {
+                                        type: "room",
+                                        to: roomName,
+                                        mes: encodeURIComponent(messenger)
+                                    }
+                                }
+                            }
+
+                            socket.send(JSON.stringify(mess1));
+                            resolve();
+                        }
+                    });
+                }
 
                 const twoMessChat = (roomName) =>{
                     messchat(roomName).then(get_room_mess_chat(roomName));
@@ -258,7 +282,9 @@
                     const file = event.target.files[0];
                     setMess(file.name);
                 }
-
+     const Tranlate = () => {
+     navigate("/Incomingvideo");
+   }
                 // file đang làm
                 function handleImageChange({target: {files}}){
                     if (files && files[0]){
@@ -273,15 +299,19 @@
 
                 const handleVideoCall = useCallback(() => {
                         navigate(`/room/${nameVideoRoom}`);
+                        setisClickvideo(true);
                 }, [navigate,nameVideoRoom])
+// gửi link xuong  tin nhắn
+                const videoCall = (room , mess) => {
+                    videocall(room, mess).then(handleVideoCall);
 
                 // tìm kiếm
                 function searchUser(name) {
-                    // const valueS = document.getElementById("search")
-                    // const userSearch = name.filter(value =>{
-                    //     return value.name.toUpperCase().includes(valueS.nodeValue.toUpperCase())
-                    // })
-                    // console.log(userSearch)
+                    const valueS = document.getElementById("search")
+                    const userSearch = name.filter(value =>{
+                        return value.name.toUpperCase().includes(valueS.nodeValue.toUpperCase())
+                    })
+                    console.log(userSearch)
                 }
                 // sau khi kết nối websocket thành công
                 useEffect(() => {
@@ -294,6 +324,9 @@
                                     // lưu trữ thông tin đăng nhập
                                     setToken(responseData.data.tokens);
                                     sessionStorage.setItem("mesnam", user);
+                                    sessionStorage.setItem("login" ,responseData.event);
+                                    const login = sessionStorage.getItem("login");
+                                    console.log(login)
                                     // luu tru RE_LOGIN_CODE
                                     // tai sao dung session
                                     sessionStorage.setItem("codeNlu" , responseData.data.RE_LOGIN_CODE);
@@ -334,6 +367,7 @@
                             if(responseData.event === "RE_LOGIN" && responseData.status ===
                                 "error" && responseData.mes === "Re-Login error, Code error or you are overtime to relogin!"){
                                 setIsLoginSuccess(false);
+                                sessionStorage.setItem("Relogin" , responseData.data);
                                 setErrorMsg("");
 
                             }
@@ -359,7 +393,6 @@
                              // check user
                             if (responseData.event === "CHECK_USER" && responseData.status === "success"){
                                 const room = localStorage.getItem("nameRoom");
-                                console.log(responseData.data.status);
                                 handJoinRoom(room);
                                 // lấy ra danh sách người dùng, phòng
                                 handGetUserList();
@@ -399,8 +432,14 @@
                                       handGetUserList={handGetUserList}
                                       twoMessChat={twoMessChat}
                                       file={file}
+                                      Tranlate={Tranlate}
                                       handleVideoCall={handleVideoCall}
-                                      // searchUser = {searchUser(roomName)}
+
+                                      videoCall={videoCall}
+                                      isClickvideo={isClickvideo}
+
+                                      searchUser = {searchUser(roomName)}
+
                                   />
                                 }
                                 {isLoginSuccess == false &&
@@ -412,6 +451,10 @@
                                             handleLogin = {handleLogin}
                                             errorMsg={errorMsg}
                                         />
+                                }
+                                {
+                                    isLoginSuccess !==false && isLoginSuccess !==true &&
+                                    <RoomVideoCall videocall ={videocall} />
                                 }
                             </div>
                     </div>
