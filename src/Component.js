@@ -72,11 +72,11 @@
 
                     };
                 },[]);
-// xét lại giá tra (mặc định là false);
+                // xét lại giá tra (mặc định là false);
                 const handlePosClick = () => {
                     setEmojiPickerVisible(!isEmojiPickerVisible);
                 };
-// clcik chọn emoij
+                // clcik chọn emoij
                 const handleEmojiClick = (emoji) => {
                     setSelectedEmoji(emoji.emoji); // chọn emoij
                     // thêm nhiều emoij + vào trong mess -> xét lại các giá trị
@@ -224,7 +224,6 @@
                                 resolve();
                             }
                         )}
-
                 }
 
             // check user
@@ -268,12 +267,22 @@
                         setMess(fileName);
                     }
                 }
+
+                // làm video call
                 const [nameVideoRoom, setNameVideoRoom] = useState("VideoCall")
-                // video call
+
                 const handleVideoCall = useCallback(() => {
                         navigate(`/room/${nameVideoRoom}`);
                 }, [navigate,nameVideoRoom])
 
+                // tìm kiếm
+                function searchUser(name) {
+                    const valueS = document.getElementById("search")
+                    const userSearch = name.filter(value =>{
+                        return value.name.toUpperCase().includes(valueS.nodeValue.toUpperCase())
+                    })
+                    console.log(userSearch)
+                }
                 // sau khi kết nối websocket thành công
                 useEffect(() => {
                     if (socket){
@@ -346,7 +355,6 @@
                                 setMessege(responseData.data.chatData);
                                 localStorage.setItem("ownner", responseData.data.own);
                                 const ownner = localStorage.getItem("ownner");
-
                             }
                              // check user
                             if (responseData.event === "CHECK_USER" && responseData.status === "success"){
@@ -392,7 +400,7 @@
                                       twoMessChat={twoMessChat}
                                       file={file}
                                       handleVideoCall={handleVideoCall}
-
+                                      searchUser = {searchUser(roomName)}
                                   />
                                 }
                                 {isLoginSuccess == false &&

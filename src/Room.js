@@ -68,7 +68,7 @@ export default class Room extends React.Component{
                     {/*search chat*/}
                     <div className="search-chat">
                         <div>
-                            <input className="pointer" type="text" placeholder="Search or start new chat" fdprocessedid="hss68p"/>
+                            <input  id="search" className="pointer" type="text" placeholder="Search or start new chat" fdprocessedid="hss68p"/>
                             <ion-icon name="search-outline" role="img" className="md hydrated" aria-label="search outline">
                             </ion-icon>
                         </div>
