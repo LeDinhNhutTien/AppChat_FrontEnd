@@ -91,7 +91,7 @@ export default class Room extends React.Component{
                             <div>
                                 {this.props.roomList.map((room, index) => (
                                     <div className="group" >
-                                        { room.name !=="sassd" && room.name !== "" && room.name !== "2324322" && room.name !== "Thu?n ??ng c?p"? (
+                                        { room.name !=="sassd" && room.name !== "" && room.name !== "2324322" && room.name !== "Thu?n ??ng c?p" &&  room.name !== "20130423" &&  room.name !== "20130433" &&  room.name !== "20130388" ?(
                                             <h6 key={index}>
                                                 <div className="imgtext1" onClick={() => this.props.handJoinRoom(room.name)}>
                                                     <div className="user-avatar"><img
@@ -180,7 +180,7 @@ export default class Room extends React.Component{
                                                 <div className="mess frnmess">
                                                     <h6>
                                                         <h6 key={index}>
-                                                            <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
+                                                            <img  src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className="messFr"></img>
                                                             <h6>{message.name}</h6>
                                                             <p>{decodeURIComponent(message.mes)}
                                                                 <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
@@ -191,13 +191,15 @@ export default class Room extends React.Component{
                                         </div>
                                         <div>
                                             {message.name === "20130433" && message.mes.startsWith("https") &&
-                                                <div className="mess frnmess">
+                                                <div className="mess mymess">
                                                     <h6>
                                                         <h6 key={index}>
                                                             <h6>{message.name}</h6>
-                                                            <img  src={decodeURIComponent(message.mes)} alt=""/>
-                                                            <br/>
-                                                            <p><span>{message.createAt}</span></p>
+                                                            <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
+                                                            <p >  <img className="img_chat" src={decodeURIComponent(message.mes)} alt=""/>
+                                                                <br/>
+                                                                <p>
+                                                                    <span>{convertServerTimeToClientTime(message.createAt)}</span></p></p>
                                                     </h6>
                                                 </h6>
                                                 </div>
@@ -205,13 +207,13 @@ export default class Room extends React.Component{
                                         </div>
                                         <div>
                                             {message.name === "20130423" && message.mes.startsWith("https") &&
-                                                <div className="mess frnmess">
+                                                <div className="mess mymess ">
                                                     <h6>
                                                         <h6 key={index}>
+                                                            <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
                                                             <h6>{message.name}</h6>
-                                                            <img  src={decodeURIComponent(message.mes)} alt=""/>
-                                                            <br/>
-                                                            <p><span>{message.createAt}</span></p>
+                                                            <p><img className="img_chat" src={decodeURIComponent(message.mes)} alt=""/>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
                                                 </div>
@@ -223,10 +225,12 @@ export default class Room extends React.Component{
                                                 <div className="mess frnmess">
                                                     <h6>
                                                         <h6 key={index}>
+                                                            <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
                                                             <h6>{message.name}</h6>
-                                                            <img  src={decodeURIComponent(message.mes)} alt=""/>
-                                                            <br/>
-                                                            <p><span>{message.createAt}</span></p>
+                                                            <p >  <img className="img_chat"  src={decodeURIComponent(message.mes)} alt=""/>
+                                                                <br/>
+                                                                <p>
+                                                                    <span>{convertServerTimeToClientTime(message.createAt)}</span></p></p>
                                                         </h6>
                                                     </h6>
                                                 </div>
