@@ -31,6 +31,7 @@
                 const [messenger, setMess] = useState("");
                 const [roomName, setRoomName] = useState("");
                 const [messege, setMessege] = useState([]);
+                const [isMessenger, setisMessenger] = useState(false);
                 const [isClickvideo, setisClickvideo] = useState(false);
                 // tao mang chua phong
                 const [roomList, setRoomList] = useState([]);
@@ -252,7 +253,7 @@
                 }
 
                 // get people chat mess
-                const GET_PEOPLE_CHAT_MES = () => {
+                const GET_PEOPLE_CHAT_MES = (roomName) => {
                     if (socket) {
                         const mess = {
                             action: "onchat",
@@ -267,11 +268,9 @@
                         socket.send(JSON.stringify(mess));
                     }
                 }
-
                 // send chat people
                 const messPeople = (user) => {
                     if (socket) {
-                        return new Promise((resolve) => {
                                 const people = {
                                     action: "onchat",
                                     data: {
@@ -285,9 +284,6 @@
                                 }
                                 setMessege(prevMessages => [...prevMessages, , messenger]);
                                 socket.send(JSON.stringify(people));
-                                resolve();
-                            }
-                        )
                     }
                 }
 
@@ -393,6 +389,7 @@
                                     const room = localStorage.getItem("nameRoom");
                                     const name = sessionStorage.getItem("name");
                                     setMess("");
+
                                     handJoinRoom(room);
                                 }
                                 // ma relogin chi ddung 1 lan
@@ -430,7 +427,18 @@
                                     setMessege(responseData.data.chatData);
                                     localStorage.setItem("ownner", responseData.data.own);
                                     const ownner = localStorage.getItem("ownner");
+                                    setisMessenger(false);
+
                                 }
+                            if(responseData.event === "GET_PEOPLE_CHAT_MES" && responseData.status === "success") {
+                                setisMessenger(true);
+                                const dulieu = responseData.data;
+                                setMessege(responseData.data);
+                                for (let i = 0; i < dulieu.length; i++) {
+                                    console.log("duleiu" + dulieu[i].to);
+                                    sessionStorage.setItem("dataTo", dulieu[i].to);
+                                }
+                            }
                                 // check user
                                 if (responseData.event === "CHECK_USER" && responseData.status === "success") {
                                     const room = localStorage.getItem("nameRoom");
@@ -466,7 +474,7 @@
                                         handJoinRoom={handJoinRoom}
                                         roomName={roomName}
                                         setRoomName={setRoomName}
-
+                                        isMessenger = {isMessenger}
                                         messenger={messenger}
                                         setMess={setMess}
                                         handTwoClick={handTwoClick}
@@ -477,10 +485,10 @@
                                         file={file}
                                         Tranlate={Tranlate}
                                         handleVideoCall={handleVideoCall}
-
+                                        messPeople={messPeople}
                                         videoCall={videoCall}
                                         isClickvideo={isClickvideo}
-
+                       getchatpeople ={GET_PEOPLE_CHAT_MES }
                                         // searchUser={searchUser(roomName)}
                                         setImageUpload = {setImageUpload}
                                         imageUpload = {imageUpload}
