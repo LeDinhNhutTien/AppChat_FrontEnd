@@ -30,7 +30,7 @@ export default class Room extends React.Component{
 
 
         sessionStorage.setItem("mesnam", this.props.user);
-
+        const  data = sessionStorage.getItem("dataTo");
         const mesnam =  sessionStorage.getItem("mesnam");
         const username =  sessionStorage.getItem("name1");
         //
@@ -91,8 +91,7 @@ export default class Room extends React.Component{
                             <div>
                                 {this.props.roomList.map((room, index) => (
                                     <div className="group" >
-                                        {room.name !== "20130388" && room.name !=="sassd" && room.name !== "" && room.name !== "2324322" && room.name !== "Thu?n ??ng c?p" && room.name !== "Nhom 11 _Da Cap" && room.name !== "12314141"
-                                        && room.name !== "hello" && room.name !== "3252523232" && room.name !== "3252523" && room.name !== "231121312" && room.name !== "22222222" && room.name !== "124135462" && room.name !== "111111111" && room.name !== "2222222222" ? (
+                                        { room.name !=="sassd" && room.name !== "" && room.name !== "2324322" && room.name !== "Thu?n ??ng c?p"? (
                                             <h6 key={index}>
                                                 <div className="imgtext1" onClick={() => this.props.handJoinRoom(room.name)}>
                                                     <div className="user-avatar"><img
@@ -102,7 +101,16 @@ export default class Room extends React.Component{
                                                 </div>
                                             </h6>
 
-                                        ) : (null)
+                                        ) : (
+                                            <h6 key={index}>
+                                                <div className="imgtext1 "   onClick={() => this.props. getchatpeople(room.name)}>
+                                                    <div className="user-avatar"><img
+                                                        src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png"
+                                                        className="img-cover"/></div>
+                                                    <p className="author_mess">{room.name}</p>
+                                                </div>
+                                            </h6>
+                                        )
 
                                         }
                                     </div>
@@ -341,8 +349,11 @@ export default class Room extends React.Component{
                                         this.props.twoMessChat(nameRoom);
                                     }
                                 }} fdprocessedid="61a96k"/>
-                                <ion-icon onClick={() => this.props.twoMessChat(nameRoom)} name="send" role="img"
-                                          className="md hydrated" aria-label="send"></ion-icon>
+                        {this.props.isMessenger == false ?(
+                            <ion-icon onClick={() => this.props.twoMessChat( nameRoom)} name="send" role="img"
+                                      className="md hydrated" aria-label="send"></ion-icon>
+                        ) :(  <ion-icon onClick={() => this.props.messPeople( data)} name="send" role="img"
+                                        className="md hydrated" aria-label="send">hi</ion-icon>)}
                                     </div>
                            </div>
                         <div className="icon_Emoid">
