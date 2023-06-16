@@ -4,7 +4,15 @@
 
             import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
             import './room.css'
-
+            import { storage } from "./firebase";
+            import {
+                ref,
+                uploadBytes,
+                getDownloadURL,
+                listAll,
+                list,
+            } from "firebase/storage";
+            import { v4 } from "uuid";
 
             import LoginForm from "./LoginForm";
             import Room from "./Room";
@@ -36,6 +44,37 @@
                 //uploadFile
                 const [image, setImage] = useState(null)
                 const [fileName, setFileName] = useState("")
+
+                const [imageUpload, setImageUpload] = useState(null);
+                const [imageUrls, setImageUrls] = useState();
+
+                const imagesListRef = ref(storage, "images/");
+                const uploadFile = () => {
+                    if (imageUpload == null){
+                        return;
+                    }
+                    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+                    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+                        getDownloadURL(imageRef).then((url) => {
+                            setImageUrls(url)
+                        })
+                        // getDownloadURL(snapshot.ref).then((url) => {
+                        //     setImageUrls((prev) => [...prev, url]);
+                        //     // setImageUrls(url)
+                        // });
+                    });
+                }
+                useEffect(() => {
+                    listAll(imagesListRef).then((response) => {
+                        response.items.forEach((item) => {
+                            getDownloadURL(item).then((url) => {
+                                // setImageUrls((prev) => [...prev, url]);
+                                setImageUrls(url);
+                            });
+                        });
+                    });
+                }, []);
+
 
                 const handTwoClick = (roomName, user) => {
                     messchat(roomName).then(messPeople(user))
@@ -124,8 +163,9 @@
                         };
                         socket.send(JSON.stringify(data));
                     }
+                    // sau khi tạo thì load lại danh sach phong, người dùng
+                    handGetUserList()
                 }
-
 
                 //xử lý join room
                 const handJoinRoom = (roomName) => {
@@ -208,6 +248,7 @@
 
                 const twoMessChat = (roomName) => {
                     messchat(roomName).then(get_room_mess_chat(roomName));
+                    uploadFile()
                 }
 
                 // get people chat mess
@@ -264,6 +305,8 @@
                         }
                         socket.send(JSON.stringify(check));
                     }
+                    // lấy ra danh sách người dùng, phòng
+                    handGetUserList();
                 }
 
                 // lay ra danh sach nguoi dung, phong
@@ -417,6 +460,8 @@
                                 {isLoginSuccess == true &&
                                     <Room
                                         user={user}
+                                        customer={customer}
+                                        setCutomer={setCutomer}
                                         handLougout={handLougout}
                                         handPosClick={handlePosClick}
                                         isEmojiPickerVisible={isEmojiPickerVisible}
@@ -443,7 +488,10 @@
                                         isClickvideo={isClickvideo}
 
                                         // searchUser={searchUser(roomName)}
-
+                                        setImageUpload = {setImageUpload}
+                                        imageUpload = {imageUpload}
+                                        imageUrls = {imageUrls}
+                                        uploadFile = {uploadFile}
                                     />
                                 }
                                 {isLoginSuccess == false &&
