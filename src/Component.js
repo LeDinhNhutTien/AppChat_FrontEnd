@@ -332,13 +332,7 @@
                 }
 
                 // file đang làm
-                function handleImageChange({target: {files}}) {
-                    if (files && files[0]) {
-                        setFileName(files[0].name);
-                        setImage(URL.createObjectURL(files[0]));
-                        setMess(fileName);
-                    }
-                }
+
 
                 // làm video call
                 const [nameVideoRoom, setNameVideoRoom] = useState("VideoCall")
@@ -472,7 +466,7 @@
                                         handJoinRoom={handJoinRoom}
                                         roomName={roomName}
                                         setRoomName={setRoomName}
-                                        handleImageChange={handleImageChange}
+
                                         messenger={messenger}
                                         setMess={setMess}
                                         handTwoClick={handTwoClick}
