@@ -195,7 +195,35 @@ export default class Room extends React.Component{
                                                 </div>
                                             }
                                         </div>
-
+                                        <div>
+                                            {message.name === "20130423" && message.mes.startsWith("https") &&
+                                                <div className="mess frnmess">
+                                                    <h6>
+                                                        <h6 key={index}>
+                                                            <h6>{message.name}</h6>
+                                                            <img  src={decodeURIComponent(message.mes)} alt=""/>
+                                                            <br/>
+                                                            <p><span>{message.createAt}</span></p>
+                                                        </h6>
+                                                    </h6>
+                                                </div>
+                                            }
+                                        </div>
+                                        {/*201304388*/}
+                                        <div>
+                                            {message.name === "20130388" && message.mes.startsWith("https") &&
+                                                <div className="mess frnmess">
+                                                    <h6>
+                                                        <h6 key={index}>
+                                                            <h6>{message.name}</h6>
+                                                            <img  src={decodeURIComponent(message.mes)} alt=""/>
+                                                            <br/>
+                                                            <p><span>{message.createAt}</span></p>
+                                                        </h6>
+                                                    </h6>
+                                                </div>
+                                            }
+                                        </div>
                                         <div>
                                             {message.name === "20130423" &&  !message.mes.startsWith("https") &&  !message.mes.startsWith("http") &&
                                                 <div className="mess frnmess">
@@ -263,23 +291,23 @@ export default class Room extends React.Component{
                                             }
                                         </div>
 
-                                        <div>
-                                            {message.name === "20130388" && message.mes.startsWith("https") &&
-                                                <div className="mess mymess">
-                                                    <h6>
-                                                        <h6 key={index}>
-                                                            <h6>{message.name}</h6>
-                                                            <p><a href={decodeURIComponent(message.mes)} target="_blank"
-                                                                  onClick={(event) => {
-                                                                      event.preventDefault();
-                                                                      window.open(decodeURIComponent(message.mes))
-                                                                  }}>{decodeURIComponent(message.mes)}</a>
-                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
-                                                        </h6>
-                                                    </h6>
-                                                </div>
-                                            }
-                                        </div>
+                                        {/*<div>*/}
+                                        {/*    {message.name === "20130388" && message.mes.startsWith("https") &&*/}
+                                        {/*        <div className="mess mymess">*/}
+                                        {/*            <h6>*/}
+                                        {/*                <h6 key={index}>*/}
+                                        {/*                    <h6>{message.name}</h6>*/}
+                                        {/*                    <p><a href={decodeURIComponent(message.mes)} target="_blank"*/}
+                                        {/*                          onClick={(event) => {*/}
+                                        {/*                              event.preventDefault();*/}
+                                        {/*                              window.open(decodeURIComponent(message.mes))*/}
+                                        {/*                          }}>{decodeURIComponent(message.mes)}</a>*/}
+                                        {/*                        <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>*/}
+                                        {/*                </h6>*/}
+                                        {/*            </h6>*/}
+                                        {/*        </div>*/}
+                                        {/*    }*/}
+                                        {/*</div>*/}
                                         {/*goi thoai*/}
 
                                     </div>
