@@ -279,13 +279,13 @@
 }
 .mess p{
     position: relative;
-    right: 20px;
     text-align: right;
     max-width: 100%;
     padding: 12px;
     background: #fff;
     border-radius: 10px;
-    font-size: 0.9em
+    font-size: 0.9em;
+    margin-right: 20px;
 }
 .mess p::before{
     content: '';
