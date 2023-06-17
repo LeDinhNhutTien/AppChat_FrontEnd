@@ -356,16 +356,24 @@ export default class Room extends React.Component{
                                onClick={() => document.querySelector(".input-field").click()}>
                             </i>
                         </div>
-                        <input type="text" placeholder="Type a message" value={this.props.messenger}
-                               onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                        { this.props.isMessenger === false ?(
+                            <input type="text" placeholder="Type a message" value={this.props.messenger}
+                                   onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    this.props.twoMessChat(nameRoom);
+                                }
+                            }} fdprocessedid="61a96k"/>
+                        ) :(  <input type="text" placeholder="Type a message" value={this.props.messenger}
+                                      onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
                             if (e.key === 'Enter') {
-                                this.props.twoMessChat(nameRoom);
+                                this.props.twoMessChatPeople(data);
                             }
-                        }} fdprocessedid="61a96k"/>
+                        }} fdprocessedid="61a96k"/>)
+                        }
                         {this.props.isMessenger == false ?(
                             <ion-icon onClick={() => this.props.twoMessChat( nameRoom)} name="send" role="img"
                                       className="md hydrated" aria-label="send"></ion-icon>
-                        ) :(  <ion-icon onClick={() => this.props.messPeople( data)} name="send" role="img"
+                        ) :(  <ion-icon onClick={() => this.props.twoMessChatPeople(data)} name="send" role="img"
                                         className="md hydrated" aria-label="send">hi</ion-icon>)}
                     </div>
                 </div>
