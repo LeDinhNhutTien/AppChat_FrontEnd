@@ -13,7 +13,6 @@
                 list,
             } from "firebase/storage";
             import { v4 } from "uuid";
-
             import LoginForm from "./LoginForm";
             import Room from "./Room";
             import {navigate} from "ionicons/icons";
@@ -40,12 +39,7 @@
                 // check khi clcik vao emoij
                 const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
                 const navigate = useNavigate();
-
-
                 //uploadFile
-                const [image, setImage] = useState(null)
-                const [fileName, setFileName] = useState("")
-
                 const [imageUpload, setImageUpload] = useState(null);
                 const [imageUrls, setImageUrls] = useState();
 
@@ -77,12 +71,10 @@
                 }, []);
 
 
-                const handTwoClick = (roomName, user) => {
-                    messchat(roomName).then(messPeople(user))
-                }
+
 
                 // khi component được taạo thiết lập kết nối websocket
-                const mesnam = sessionStorage.getItem("mesnam");
+                const username = sessionStorage.getItem("username");
                 useEffect(() => {
                     const newSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
 
@@ -92,7 +84,6 @@
                     })
                     const susscess = sessionStorage.getItem("success");
                     if (susscess === "success") {
-                        sessionStorage.setItem("name1", mesnam);
                         const nlu = sessionStorage.getItem("codeNlu");
                         newSocket.onopen = function () {
                             const relogin = {
@@ -100,7 +91,7 @@
                                 data: {
                                     event: "RE_LOGIN",
                                     data: {
-                                        user: mesnam,
+                                        user: username,
                                         code: nlu
                                     }
                                 }
@@ -139,6 +130,8 @@
                         },
                     };
                     socket.send(JSON.stringify(requestData));
+                    sessionStorage.setItem("username", requestData.data.data.user);
+
                 }
                 // su kien dang xuat
                 const handLougout = () => {
@@ -482,7 +475,6 @@
                                         isMessenger = {isMessenger}
                                         messenger={messenger}
                                         setMess={setMess}
-                                        handTwoClick={handTwoClick}
                                         messege={messege}
                                         checkUser={checkUser}
                                         handGetUserList={handGetUserList}
