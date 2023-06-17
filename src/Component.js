@@ -302,10 +302,14 @@
                                 }
                             }
                         }
-                        socket.send(JSON.stringify(check));
+                        socket.send(JSON.stringify(check));const
+                            success = sessionStorage.getItem("success" );
+                            const checkuser = sessionStorage.getItem("checkuser" );
+                            if(success ==="success" && checkuser === "CHECK_USER"){
+                                sessionStorage.setItem("user" ,check.data.data.user)
+                            }
                     }
-                    // lấy ra danh sách người dùng, phòng
-                    handGetUserList();
+
                 }
 
                 // lay ra danh sach nguoi dung, phong
@@ -344,14 +348,6 @@
                 const videoCall = (room, mess) => {
                     videocall(room, mess).then(handleVideoCall);
                 }
-                // tìm kiếm
-                // function searchUser(name) {
-                //     const valueS = document.getElementById("search")
-                //     const userSearch = name.filter(value =>{
-                //         return value.name.toUpperCase().includes(valueS.nodeValue.toUpperCase())
-                //     })
-                //     console.log(userSearch)
-                // }
 
                 // sau khi kết nối websocket thành công
                 useEffect(() => {
@@ -363,10 +359,8 @@
                                     setIsLoginSuccess(true);
                                     // lưu trữ thông tin đăng nhập
                                     setToken(responseData.data.tokens);
-                                    sessionStorage.setItem("mesnam", user);
                                     sessionStorage.setItem("login", responseData.event);
                                     const login = sessionStorage.getItem("login");
-                                    console.log(login)
                                     // luu tru RE_LOGIN_CODE
                                     // tai sao dung session
                                     sessionStorage.setItem("codeNlu", responseData.data.RE_LOGIN_CODE);
@@ -440,9 +434,10 @@
                                 // check user
                                 if (responseData.event === "CHECK_USER" && responseData.status === "success") {
                                     const room = localStorage.getItem("nameRoom");
-                                    handJoinRoom(room);
+                                    sessionStorage.setItem("success" ,responseData.status );
+                                    sessionStorage.setItem("checkuser" ,responseData.event );
                                     // lấy ra danh sách người dùng, phòng
-                                    handGetUserList();
+                                    // handGetUserList();
                                 }
 
                                 // lay ra danh sach nguoi dung, phong
