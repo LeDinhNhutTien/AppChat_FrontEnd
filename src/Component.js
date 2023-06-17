@@ -266,11 +266,14 @@
                             }
                         }
                         socket.send(JSON.stringify(mess));
+
+                        sessionStorage.setItem("dataTo", mess.data.data.name);
                     }
                 }
                 // send chat people
                 const messPeople = (user) => {
-                    if (socket) {
+                    return new Promise((resolve) => {
+                            if (socket) {
                                 const people = {
                                     action: "onchat",
                                     data: {
@@ -282,9 +285,16 @@
                                         }
                                     }
                                 }
-                                setMessege(prevMessages => [...prevMessages, , messenger]);
                                 socket.send(JSON.stringify(people));
+                                resolve();
+                            }
                     }
+                    )
+
+                }
+                const twoMessChatPeople = (roomName) => {
+                    messPeople(roomName).then(GET_PEOPLE_CHAT_MES(roomName));
+                    uploadFile()
                 }
 
                 // check user
@@ -407,15 +417,12 @@
                                     setIsLoginSuccess(false);
                                     sessionStorage.setItem("Relogin", responseData.data);
                                     setErrorMsg("");
-
                                 }
                                 // gửi tin nhắn thành công
                                 if (responseData.event === "SEND_CHAT" && responseData.status === "success") {
-
                                     localStorage.setItem("mes", responseData.data.mes);
                                     localStorage.setItem("messname", responseData.data.name);
                                     console.log(responseData.chatData);
-
                                     // để hiển thị danh sách thì ta phải lập lại việc join room trước đó
                                     // lấy giá tr của room đã lưu tr dựa vào handJoinRoom(room)
                                     const room = localStorage.getItem("nameRoom");
@@ -428,16 +435,14 @@
                                     localStorage.setItem("ownner", responseData.data.own);
                                     const ownner = localStorage.getItem("ownner");
                                     setisMessenger(false);
-
                                 }
-                            if(responseData.event === "GET_PEOPLE_CHAT_MES" && responseData.status === "success") {
+                            if(responseData.event === "GET_PEOPLE_CHAT_MES" && responseData.status === "success" ) {
                                 setisMessenger(true);
+                                setMess("");
                                 const dulieu = responseData.data;
                                 setMessege(responseData.data);
-                                for (let i = 0; i < dulieu.length; i++) {
-                                    console.log("duleiu" + dulieu[i].to);
-                                    sessionStorage.setItem("dataTo", dulieu[i].to);
-                                }
+
+
                             }
                                 // check user
                                 if (responseData.event === "CHECK_USER" && responseData.status === "success") {
@@ -449,7 +454,7 @@
 
                                 // lay ra danh sach nguoi dung, phong
                                 if (responseData.event === "GET_USER_LIST" && responseData.status === "success") {
-                                    console.log(responseData.data);
+                                    setisMessenger(false);
                                     setRoomList(responseData.data);
                                 }
                             }
@@ -483,12 +488,13 @@
                                         handGetUserList={handGetUserList}
                                         twoMessChat={twoMessChat}
                                         file={file}
+                                        twoMessChatPeople={twoMessChatPeople}
                                         Tranlate={Tranlate}
                                         handleVideoCall={handleVideoCall}
                                         messPeople={messPeople}
                                         videoCall={videoCall}
                                         isClickvideo={isClickvideo}
-                       getchatpeople ={GET_PEOPLE_CHAT_MES }
+                                        getchatpeople ={GET_PEOPLE_CHAT_MES }
                                         // searchUser={searchUser(roomName)}
                                         setImageUpload = {setImageUpload}
                                         imageUpload = {imageUpload}
