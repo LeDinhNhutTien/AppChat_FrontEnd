@@ -83,7 +83,18 @@ export default class Room extends React.Component{
                             <div>
                                 {this.props.roomList.map((room, index) => (
                                     <div className="group" >
-                                        { room.name !=="sassd" && room.name !== "" && room.name !== "2324322" && room.name !== "Thu?n ??ng c?p" &&  room.name !== "20130423" &&  room.name !== "20130433" &&  room.name !== "20130388" ?(
+                                        { room.type === 0 &&
+                                            <h6 key={index}>
+                                                <div className="imgtext1 "   onClick={() => this.props.getchatpeople(room.name)}>
+                                                    <div className="user-avatar"><img
+                                                        src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png"
+                                                        className="img-cover"/></div>
+                                                    <p className="author_mess">{room.name}</p>
+                                                </div>
+                                            </h6>
+
+                                        }
+                                        {  room.type === 1  &&
                                             <h6 key={index}>
                                                 <div className="imgtext1" onClick={() => this.props.handJoinRoom(room.name)}>
                                                     <div className="user-avatar"><img
@@ -93,18 +104,9 @@ export default class Room extends React.Component{
                                                 </div>
                                             </h6>
 
-                                        ) : (
-                                            <h6 key={index}>
-                                                <div className="imgtext1 "   onClick={() => this.props.getchatpeople(room.name)}>
-                                                    <div className="user-avatar"><img
-                                                        src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png"
-                                                        className="img-cover"/></div>
-                                                    <p className="author_mess">{room.name}</p>
-                                                </div>
-                                            </h6>
-                                        )
-
                                         }
+
+
                                     </div>
                                 ))}
                             </div>
