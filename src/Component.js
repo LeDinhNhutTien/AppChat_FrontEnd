@@ -423,6 +423,12 @@
                                     const ownner = localStorage.getItem("ownner");
                                     setisMessenger(false);
                                 }
+
+                            // kểm tra phòng tồn tại chưa
+                            if (responseData.event === "CREATE_ROOM" && responseData.status === "error"){
+                                alert("Room exsits")
+                            }
+
                             if(responseData.event === "GET_PEOPLE_CHAT_MES" && responseData.status === "success" ) {
                                 setisMessenger(true);
                                 setMess("");
