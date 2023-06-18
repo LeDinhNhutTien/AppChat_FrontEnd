@@ -31,6 +31,7 @@
                 const [roomName, setRoomName] = useState("");
                 const [messege, setMessege] = useState([]);
                 const [isMessenger, setisMessenger] = useState(false);
+                const [isJoin, setisJoin] = useState(true);
                 const [isClickvideo, setisClickvideo] = useState(false);
                 // tao mang chua phong
                 const [roomList, setRoomList] = useState([]);
@@ -39,6 +40,7 @@
                 // check khi clcik vao emoij
                 const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
                 const navigate = useNavigate();
+
                 //uploadFile
                 const [imageUpload, setImageUpload] = useState(null);
                 const [imageUrls, setImageUrls] = useState();
@@ -368,6 +370,7 @@
                                     navigate("/home");
                                     // lay ra danh sach nguoi dung, phong
                                     handGetUserList();
+                                    setisJoin(true)
                                 } else {
                                     setErrorMsg("Đăng nhập không thành công");
                                 }
@@ -417,17 +420,31 @@
                                 }
                                 // joinRoom
                                 if (responseData.event === "JOIN_ROOM" && responseData.status === "success") {
+                                    const data = responseData.data.userList.length;
+                                    let ownCount = 0;
+                                    if(responseData.data.own === responseData.data.own){
+                                        ownCount += 1;
+                                        sessionStorage.setItem("count", ownCount +data)
+                                    }
                                     localStorage.setItem("nameRoom", responseData.data.name);
                                     setMessege(responseData.data.chatData);
                                     localStorage.setItem("ownner", responseData.data.own);
                                     const ownner = localStorage.getItem("ownner");
                                     setisMessenger(false);
+                                    setisJoin(false);
                                 }
+
+                            // kểm tra phòng tồn tại chưa
+                            if (responseData.event === "CREATE_ROOM" && responseData.status === "error"){
+                                alert("Room exsits")
+                            }
+
                             if(responseData.event === "GET_PEOPLE_CHAT_MES" && responseData.status === "success" ) {
                                 setisMessenger(true);
                                 setMess("");
                                 const dulieu = responseData.data;
                                 setMessege(responseData.data);
+                                setisJoin(false);
 
 
                             }
@@ -487,6 +504,8 @@
                                         imageUpload = {imageUpload}
                                         imageUrls = {imageUrls}
                                         uploadFile = {uploadFile}
+                                        isJoin = {isJoin}
+                                        setisJoin = {setisJoin}
                                     />
                                 }
                                 {isLoginSuccess == false &&
