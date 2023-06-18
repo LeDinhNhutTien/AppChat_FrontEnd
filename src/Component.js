@@ -40,6 +40,7 @@
                 // check khi clcik vao emoij
                 const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
                 const navigate = useNavigate();
+
                 //uploadFile
                 const [imageUpload, setImageUpload] = useState(null);
                 const [imageUrls, setImageUrls] = useState();
@@ -419,6 +420,12 @@
                                 }
                                 // joinRoom
                                 if (responseData.event === "JOIN_ROOM" && responseData.status === "success") {
+                                    const data = responseData.data.userList.length;
+                                    let ownCount = 0;
+                                    if(responseData.data.own === responseData.data.own){
+                                        ownCount += 1;
+                                        sessionStorage.setItem("count", ownCount +data)
+                                    }
                                     localStorage.setItem("nameRoom", responseData.data.name);
                                     setMessege(responseData.data.chatData);
                                     localStorage.setItem("ownner", responseData.data.own);

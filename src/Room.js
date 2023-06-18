@@ -35,6 +35,8 @@ export default class Room extends React.Component{
         const nameRoom = localStorage.getItem("nameRoom");
         const sortMess = this.props.messege.sort((a, b) => a.id - b.id);
         const  url =sessionStorage.getItem("linkcall");
+
+        const count  = sessionStorage.getItem("count" );
         return <div>
 
             <div className="container1">
@@ -128,16 +130,17 @@ export default class Room extends React.Component{
 
                                     {/*<span>Online</span>*/}
                             </div>
+                            // tin nhắn người
                         } {this.props.isMessenger === false && this.props.isJoin === false &&
                         <div className={"imgtext"}>
                             <div className={"user-avatar"}>
                                 <img src="https://img.meta.com.vn/Data/image/2022/01/13/anh-dep-thien-nhien-3.jpg" className={"img-cover"}/>
                             </div>
                             <p className={"author_mess"}>{nameRoom}<br/>
-                                <span>Online</span></p>
+                                <span>{count} thành viên</span></p>
                         </div>
                     }
-
+                    {/*tin nhắn nhóm*/}
                         {this.props.isMessenger === true && this.props.isJoin === false &&
                             <div className={"imgtext"}>
                                 <div className={"user-avatar"}>
@@ -200,9 +203,9 @@ export default class Room extends React.Component{
                     {/*Chat box*/}
                     <div className="chatbox">
                         {this.props.isJoin === true &&
-                            <div>
+                            <div className={"interface"}>
                                 <h2>Chào mừng bạn đến App Chat của nhóm 11!</h2>
-                                <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz6C4Pptuv_HeluHFtNhTP81KE1ZyojghTqg&usqp=CAU"}></img>
+                                <img src={"https://firebasestorage.googleapis.com/v0/b/uploadingfile-eb7e8.appspot.com/o/images%2Fanh4.jpg54d3c648-c04d-4b70-a530-2381b137048a?alt=media&token=861a8532-c9c9-4704-b0b9-01ae1825c9fa"}></img>
                             </div>
                         }
                         {/*tin nhắn người*/}
