@@ -344,41 +344,80 @@ export default class Room extends React.Component{
                         }
 
                     </div>
-
-                    <div className="chat-input-right">
-                        <div id="pos" onClick={this.props.handPosClick}>
-                            <i className="fa-regular fa-face-smile"></i>
-                        </div>
-                        <div>
-                            <input type={"file"} accept={'image/*'} className={'input-field'} hidden
-                                   onChange={(event) => {
-                                       this.props.handleChangImage(event.target.files[0]);
-                                   }}
-                            />
-                            <i className="fa-solid fa-paperclip"
-                               onClick={() => document.querySelector(".input-field").click()}>
-                            </i>
-                        </div>
-                        { this.props.isMessenger === false ?(
-                            <input type="text" placeholder="Tin nhắn" value={this.props.messenger}
-                                   onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                            {/*Người*/}
+                    {this.props.isMessenger === false && this.props.isJoin === false &&
+                        <div className="chat-input-right">
+                            <div id="pos" onClick={this.props.handPosClick}>
+                                <i className="fa-regular fa-face-smile"></i>
+                            </div>
+                            <div>
+                                <input type={"file"} accept={'image/*'} className={'input-field'} hidden
+                                       onChange={(event) => {
+                                           this.props.handleChangImage(event.target.files[0]);
+                                       }}
+                                />
+                                <i className="fa-solid fa-paperclip"
+                                   onClick={() => document.querySelector(".input-field").click()}>
+                                </i>
+                            </div>
+                            { this.props.isMessenger === false ?(
+                                <input type="text" placeholder="Tin nhắn" value={this.props.messenger}
+                                       onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        this.props.twoMessChat(nameRoom);
+                                    }
+                                }} fdprocessedid="61a96k"/>
+                            ) :(  <input type="text" placeholder="Tin nhắn" value={this.props.messenger}
+                                         onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
-                                    this.props.twoMessChat(nameRoom);
+                                    this.props.twoMessChatPeople(data);
                                 }
-                            }} fdprocessedid="61a96k"/>
-                        ) :(  <input type="text" placeholder="Tin nhắn" value={this.props.messenger}
-                                      onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                                this.props.twoMessChatPeople(data);
+                            }} fdprocessedid="61a96k"/>)
                             }
-                        }} fdprocessedid="61a96k"/>)
-                        }
-                        {this.props.isMessenger == false ?(
-                            <ion-icon onClick={() => this.props.twoMessChat( nameRoom)} name="send" role="img"
-                                      className="md hydrated" aria-label="send"></ion-icon>
-                        ) :(  <ion-icon onClick={() => this.props.twoMessChatPeople(data)} name="send" role="img"
-                                        className="md hydrated" aria-label="send">hi</ion-icon>)}
-                    </div>
+                            {this.props.isMessenger == false ?(
+                                <ion-icon onClick={() => this.props.twoMessChat( nameRoom)} name="send" role="img"
+                                          className="md hydrated" aria-label="send"></ion-icon>
+                            ) :(  <ion-icon onClick={() => this.props.twoMessChatPeople(data)} name="send" role="img"
+                                            className="md hydrated" aria-label="send">hi</ion-icon>)}
+                        </div>}
+
+                    {/*Nhóm*/}
+                    {this.props.isMessenger === true && this.props.isJoin === false &&
+                        <div className="chat-input-right">
+                            <div id="pos" onClick={this.props.handPosClick}>
+                                <i className="fa-regular fa-face-smile"></i>
+                            </div>
+                            <div>
+                                <input type={"file"} accept={'image/*'} className={'input-field'} hidden
+                                       onChange={(event) => {
+                                           this.props.handleChangImage(event.target.files[0]);
+                                       }}
+                                />
+                                <i className="fa-solid fa-paperclip"
+                                   onClick={() => document.querySelector(".input-field").click()}>
+                                </i>
+                            </div>
+                            { this.props.isMessenger === false ?(
+                                <input type="text" placeholder="Tin nhắn" value={this.props.messenger}
+                                       onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        this.props.twoMessChat(nameRoom);
+                                    }
+                                }} fdprocessedid="61a96k"/>
+                            ) :(  <input type="text" placeholder="Tin nhắn" value={this.props.messenger}
+                                         onChange={(e) => this.props.setMess(e.target.value)} onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    this.props.twoMessChatPeople(data);
+                                }
+                            }} fdprocessedid="61a96k"/>)
+                            }
+                            {this.props.isMessenger == false ?(
+                                <ion-icon onClick={() => this.props.twoMessChat( nameRoom)} name="send" role="img"
+                                          className="md hydrated" aria-label="send"></ion-icon>
+                            ) :(  <ion-icon onClick={() => this.props.twoMessChatPeople(data)} name="send" role="img"
+                                            className="md hydrated" aria-label="send">hi</ion-icon>)}
+                        </div>
+                    }
                 </div>
                 <div className="icon_Emoid">
                     {this.props.isEmojiPickerVisible && (
