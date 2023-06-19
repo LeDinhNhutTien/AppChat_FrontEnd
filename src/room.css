@@ -308,6 +308,11 @@
 .frnmess{
     justify-content: flex-start;
 }
+.icon_Emoid{
+    position: absolute;
+    top: -654px;
+    left: -466px;
+}
 .frnmess p{
     background: #fff;
     text-align: left;

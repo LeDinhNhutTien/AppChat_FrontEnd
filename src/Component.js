@@ -33,6 +33,7 @@
                 const [isMessenger, setisMessenger] = useState(false);
                 const [isJoin, setisJoin] = useState(true);
                 const [isClickvideo, setisClickvideo] = useState(false);
+                const [isCheck, setIsCheck] = useState(false);
                 // tao mang chua phong
                 const [roomList, setRoomList] = useState([]);
                 // emoij
@@ -40,7 +41,7 @@
                 // check khi clcik vao emoij
                 const [isEmojiPickerVisible, setEmojiPickerVisible] = useState(false);
                 const navigate = useNavigate();
-
+                 const [checkUserGroup , setCheckUserGruop] = useState("");
                 //uploadFile
                 const [imageUpload, setImageUpload] = useState(null);
                 const [imageUrls, setImageUrls] = useState([]);
@@ -310,16 +311,28 @@
                                 }
                             }
                         }
-                        socket.send(JSON.stringify(check));const
-                            success = sessionStorage.getItem("success" );
-                            const checkuser = sessionStorage.getItem("checkuser" );
-                            if(success ==="success" && checkuser === "CHECK_USER"){
-                                sessionStorage.setItem("user" ,check.data.data.user)
-                            }
+                        socket.send(JSON.stringify(check));
+                        sessionStorage.setItem("user" ,check.data.data.user)
                     }
 
                 }
+// check thêm vao nhom
+                const checkUserTeam = () => {
+                    if (socket) {
+                        const check = {
+                            action: "onchat",
+                            data: {
+                                event: "CHECK_USER",
+                                data: {
+                                    user: checkUserGroup
+                                }
+                            }
+                        }
+                        socket.send(JSON.stringify(check));
+                        sessionStorage.setItem("user" ,check.data.data.user)
+                    }
 
+                }
                 // lay ra danh sach nguoi dung, phong
                 const handGetUserList = () => {
                     if (socket) {
@@ -455,13 +468,18 @@
 
                             }
                                 // check user
-                                if (responseData.event === "CHECK_USER" && responseData.status === "success") {
-                                    const room = localStorage.getItem("nameRoom");
-                                    sessionStorage.setItem("success" ,responseData.status );
-                                    sessionStorage.setItem("checkuser" ,responseData.event );
-                                    // lấy ra danh sách người dùng, phòng
-                                    // handGetUserList();
-                                }
+                            if (responseData.event === "CHECK_USER" && responseData.status === "success") {
+                                // const room = localStorage.getItem("nameRoom");
+                                // handJoinRoom(room);
+                                setIsCheck(true);
+                                sessionStorage.setItem("success" ,responseData.status );
+                                sessionStorage.setItem("checkuser" ,responseData.event );
+
+                                const  user =   sessionStorage.getItem("user");
+
+
+
+                            }
 
                                 // lay ra danh sach nguoi dung, phong
                                 if (responseData.event === "GET_USER_LIST" && responseData.status === "success") {
@@ -475,7 +493,7 @@
                     return (
                         <div>
                             <div>
-                                {isLoginSuccess == true &&
+                                {isLoginSuccess === true &&
                                     <Room
                                         user={user}
                                         customer={customer}
@@ -498,10 +516,12 @@
                                         handGetUserList={handGetUserList}
                                         twoMessChat={twoMessChat}
                                         file={file}
+                                        ischeck ={isCheck}
                                         twoMessChatPeople={twoMessChatPeople}
                                         Tranlate={Tranlate}
                                         handleVideoCall={handleVideoCall}
                                         messPeople={messPeople}
+                                        checkUserTeam={checkUserTeam}
                                         videoCall={videoCall}
                                         isClickvideo={isClickvideo}
                                         getchatpeople ={GET_PEOPLE_CHAT_MES }
@@ -510,11 +530,14 @@
                                         imageUpload = {imageUpload}
                                         imageUrls = {imageUrls}
                                         isJoin = {isJoin}
+
+                                        checkUserGroup={checkUserGroup}
+                                        setCheckUserGruop ={setCheckUserGruop}
                                         setisJoin = {setisJoin}
                                         handleChangImage = {handleChangImage}
                                     />
                                 }
-                                {isLoginSuccess == false &&
+                                {isLoginSuccess === false &&
                                     <LoginForm
                                         user={user}
                                         setUser={setUser}

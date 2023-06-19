@@ -35,7 +35,7 @@ export default class Room extends React.Component{
         const nameRoom = localStorage.getItem("nameRoom");
         const sortMess = this.props.messege.sort((a, b) => a.id - b.id);
         const  url =sessionStorage.getItem("linkcall");
-
+        const  user =   sessionStorage.getItem("user");
         const count  = sessionStorage.getItem("count" );
         return <div>
 
@@ -63,11 +63,15 @@ export default class Room extends React.Component{
                     </div>
 
                     {/*search chat*/}
-                    <div className="search-chat">
+                    <div  className="search-chat">
                         <div>
-                            <input  id="search" className="pointer" type="text" placeholder="Search or start new chat" fdprocessedid="hss68p"/>
-                            <ion-icon name="search-outline" role="img" className="md hydrated" aria-label="search outline">
-                            </ion-icon>
+                            <input   value={this.props.customer}
+                                     onChange={(e) => this.props.setCutomer(e.target.value)}  id="search" className="pointer" type="text" placeholder="Search or start new chat" fdprocessedid="hss68p"/>
+                            <div onClick={this.props.checkUser}>
+                                <ion-icon name="search-outline" role="img" className="md hydrated" aria-label="search outline">
+                                </ion-icon>
+                            </div>
+
                         </div>
                     </div>
 
@@ -75,6 +79,18 @@ export default class Room extends React.Component{
                     <div className="list-chat">
                         <div>
                             <div>
+                                <div>
+                                    {this.props.ischeck === true &&
+                                        <h6 >
+                                            <div className="imgtext1" onClick={() => this.props.getchatpeople(user)}>
+                                                <div className="user-avatar"><img
+                                                    src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png"
+                                                    className="img-cover"/></div>
+                                                <p className="author_mess">{user}</p>
+                                            </div>
+                                        </h6>
+                                    }
+                                </div>
                                 {this.props.roomList.map((room, index) => (
                                     <div className="group" >
                                         { room.type === 0 &&
@@ -172,9 +188,9 @@ export default class Room extends React.Component{
                     {this.props.isJoin === false && this.props.isMessenger === true &&
                         <div className="search-chat pointer">
                             <div><input type="text" placeholder="Check user" fdprocessedid="hss68p"
-                                        value={this.props.customer}
-                                        onChange={(e) => this.props.setCutomer(e.target.value)}></input>
-                                <div onClick={this.props.checkUser}>
+                                        value={this.props.checkUserGroup}
+                                        onChange={(e) => this.props.setCheckUserGruop(e.target.value)}></input>
+                                <div onClick={this.props.checkUserTeam}>
                                     <ion-icon name="chevron-forward" role="img" className="md hydrated"
                                               aria-label="search outline"></ion-icon>
                                 </div>
@@ -187,9 +203,9 @@ export default class Room extends React.Component{
                     {this.props.isJoin === false && this.props.isMessenger === false &&
                         <div className="search-chat pointer">
                             <div><input type="text" placeholder="Check user" fdprocessedid="hss68p"
-                                        value={this.props.customer}
-                                        onChange={(e) => this.props.setCutomer(e.target.value)}></input>
-                                <div onClick={this.props.checkUser}>
+                                        value={this.props.checkUserGroup}
+                                        onChange={(e) => this.props.setCheckUserGruop(e.target.value)}></input>
+                                <div onClick={this.props.checkUserTeam}>
                                     <ion-icon name="chevron-forward" role="img" className="md hydrated"
                                               aria-label="search outline"></ion-icon>
                                 </div>
@@ -243,28 +259,75 @@ export default class Room extends React.Component{
                                                     </div>
                                                 }
                                             </div>
-                                            {message.name !== username && message.mes.startsWith("https") &&
-                                                <div className="mess frnmess">
-                                                    <h6>
-                                                        <h6 key={index}>
-                                                            <h6>{message.name}</h6>
-                                                            <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
-                                                            <p >  <img className="img_chat" src={decodeURIComponent(message.mes)} alt=""/>
-                                                                <br/>
-                                                                <p><span>{convertServerTimeToClientTime(message.createAt)}</span></p></p>
+                                            {/*gui hinh anh*/}
+                                            <div>
+
+                                                {message.name !== username && message.mes.startsWith("https%3A%2F%2Ffirebasestorage") &&
+                                                    <div className="mess frnmess">
+                                                        <h6>
+                                                            <h6 key={index}>
+                                                                <h6>{message.name}</h6>
+                                                                <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
+                                                                <p >  <img className="img_chat" src={decodeURIComponent(message.mes)} alt=""/>
+                                                                    <br/>
+                                                                    <p><span>{convertServerTimeToClientTime(message.createAt)}</span></p></p>
+                                                            </h6>
                                                         </h6>
-                                                    </h6>
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
+                                            </div>
+                                            {/*link */}
+                                            <div>
+                                                {message.name !== username && message.mes.startsWith("https") && !message.mes.startsWith("https%3A%2F%2Ffirebasestorage") &&
+                                                    <div className="mess frnmess">
+                                                        <h6>
+                                                            <h6 key={index}>
+                                                                <h6>{message.name}</h6>
+                                                                <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
+                                                                <p >
+                                                                    <a href={decodeURIComponent(message.mes)} target="_blank"
+                                                                       onClick={(event) => {
+                                                                           event.preventDefault();
+                                                                           window.open(decodeURIComponent(message.mes))
+                                                                       }}>{decodeURIComponent(message.mes)}</a>
+                                                                    <br/>
+                                                                    <p><span>{convertServerTimeToClientTime(message.createAt)}</span></p></p>
+                                                            </h6>
+                                                        </h6>
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
                                         <div>
-                                            {message.name === username && message.mes.startsWith("https") &&
+                                            {message.name === username && message.mes.startsWith("https%3A%2F%2Ffirebasestorage") &&
                                                 <div className="mess mymess ">
                                                     <h6>
                                                         <h6 key={index}>
                                                             <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
                                                             <h6>{message.name}</h6>
                                                             <p><img className="img_chat" src={decodeURIComponent(message.mes)} alt=""/>
+                                                                <br/>
+                                                                <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
+                                                        </h6>
+                                                    </h6>
+                                                </div>
+                                            }
+                                        </div>
+                                    {/*    link */}
+                                        <div>
+                                            {message.name === username && message.mes.startsWith("https") && !message.mes.startsWith("https%3A%2F%2Ffirebasestorage") &&
+                                                <div className="mess mymess ">
+                                                    <h6>
+                                                        <h6 key={index}>
+                                                            <img src={"https://i.pinimg.com/474x/13/66/24/13662403df40419741a2858e38135a5c.jpg"} className={'messFr'}></img>
+                                                            <h6>{message.name}</h6>
+                                                            <p>
+                                                                <a href={decodeURIComponent(message.mes)} target="_blank"
+                                                                   onClick={(event) => {
+                                                                       event.preventDefault();
+                                                                       window.open(decodeURIComponent(message.mes))
+                                                                   }}>{decodeURIComponent(message.mes)}</a>
+                                                                <br/>
                                                                 <br/><span>{convertServerTimeToClientTime(message.createAt)}</span></p>
                                                         </h6>
                                                     </h6>
@@ -379,6 +442,13 @@ export default class Room extends React.Component{
                                           className="md hydrated" aria-label="send"></ion-icon>
                             ) :(  <ion-icon onClick={() => this.props.twoMessChatPeople(data)} name="send" role="img"
                                             className="md hydrated" aria-label="send">hi</ion-icon>)}
+                            <div className="icon_Emoid">
+                                {this.props.isEmojiPickerVisible && (
+                                    <EmojiPicker
+                                        onEmojiClick={this.props.handleEmojiClick}
+                                    />
+                                )}
+                            </div>
                         </div>}
 
                     {/*Nhóm*/}
@@ -416,16 +486,17 @@ export default class Room extends React.Component{
                                           className="md hydrated" aria-label="send"></ion-icon>
                             ) :(  <ion-icon onClick={() => this.props.twoMessChatPeople(data)} name="send" role="img"
                                             className="md hydrated" aria-label="send">hi</ion-icon>)}
+                            <div className="icon_Emoid">
+                                {this.props.isEmojiPickerVisible && (
+                                    <EmojiPicker
+                                        onEmojiClick={this.props.handleEmojiClick}
+                                    />
+                                )}
+                            </div>
                         </div>
                     }
                 </div>
-                <div className="icon_Emoid">
-                    {this.props.isEmojiPickerVisible && (
-                        <EmojiPicker
-                            onEmojiClick={this.props.handleEmojiClick}
-                        />
-                    )}
-                </div>
+
             </div>
         </div>
     }
